@@ -1,0 +1,24 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool: 'default'
+
+
+steps:
+- task: AzureResourceManagerTemplateDeployment@3
+  inputs:
+    deploymentScope: 'Resource Group'
+    azureResourceManagerConnection: 'Azure subscription 1(1)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
+    subscriptionId: '4752c137-48fe-4a21-ac6e-435c1d51dbe9'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: 'tp2SC'
+    location: 'East US'
+    templateLocation: 'Linked artifact'
+    csmFile: '$(Build.SourcesDirectory)\AzureResourceTP2\azuredeploy.json'
+    csmParametersFile: '$(Build.SourcesDirectory)\AzureResourceTP2\azuredeploy.parameters.json'
+    deploymentMode: 'Incremental'
