@@ -4,15 +4,10 @@
 # https://aka.ms/yaml
 
 trigger:
-- master
+- main
 
 pool: 'default'
 
-variables:
-  - name: RgName
-    value: 'JV'
-  - name: storageAccount
-    value: 'storageAccountTP2'
 
 steps:
 - task: AzureResourceManagerTemplateDeployment@3
@@ -26,5 +21,4 @@ steps:
     templateLocation: 'Linked artifact'
     csmFile: '$(Build.SourcesDirectory)\AzureResourceTP2\azuredeploy.json'
     csmParametersFile: '$(Build.SourcesDirectory)\AzureResourceTP2\azuredeploy.parameters.json'
-    overrideParameters: '-storageAccountName $(storageAccount)'
     deploymentMode: 'Incremental'
