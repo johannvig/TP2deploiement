@@ -1,0 +1,106 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool: "default"
+
+variables:
+  - name: resourceGroupName
+    value: 'Guro'
+  - name: rgLocation
+    value: 'Canada Central'
+    # Project folder name for the Infrastructure
+  - name: AzureAppInfrastructure
+    value: 'FunctionApp'
+    # Project folder name for the Azure Function
+  - name: AzureAppFunction
+    value: 'Function'
+    # Name of the Infrastructure Resource
+  - name: AzureFunctionAppName
+    value: 'GuroFunctionApp'
+
+stages:
+- stage: Infra
+  displayName: Infrastructure Deployment
+  jobs:
+  - job: Infra
+    displayName: Infrastructure Deployment
+    steps:
+    - task: AzureResourceManagerTemplateDeployment@3
+      displayName: ARM Template Deployment
+      inputs:
+        deploymentScope: 'Resource Group'
+        azureResourceManagerConnection: 'Azure subscription 1(970fcef5-9c23-4f7d-a11b-5a96d104f066)'
+        subscriptionId: '970fcef5-9c23-4f7d-a11b-5a96d104f066'
+        action: 'Create Or Update Resource Group'
+        resourceGroupName: '$(resourceGroupName)'
+        location: '$(rgLocation)'
+        templateLocation: 'Linked artifact'
+        csmFile: '$(Build.SourcesDirectory)\$(AzureAppInfrastructure)\azuredeploy.json'
+        csmParametersFile: '$(Build.SourcesDirectory)\$(AzureAppInfrastructure)\azuredeploy.parameters.json'
+        overrideParameters: '-name $(AzureFunctionAppName) -resourceGroup $(resourceGroupName)'
+        deploymentMode: 'Incremental'
+
+
+- stage: Function
+  displayName: Function Deployment
+  jobs:
+  - job: FunctionBuild
+    displayName: Function Build
+
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: Restore Project
+      inputs:
+        command: 'restore'
+        projects: '$(Build.SourcesDirectory)/$(AzureAppFunction)/*.csproj'
+        
+    - task: DotNetCoreCLI@2
+      displayName: Build Azure Function
+      inputs:
+        command: 'build'
+        projects: '$(Build.SourcesDirectory)/$(AzureAppFunction)/*.csproj'
+        arguments: '--configuration Release --output $(Build.BinariesDirectory)'
+
+    - task: DotNetCoreCLI@2
+      displayName: Publish Azure Function
+      inputs:
+        command: 'publish'
+        projects: '$(Build.SourcesDirectory)/$(AzureAppFunction)/*.csproj'
+        arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)'
+        publishWebProjects: false
+        zipAfterPublish: true
+        modifyOutputPath: false
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
+
+  - job: FunctionDeploy
+    displayName: Function Deployment
+
+    steps:
+    - checkout: none
+    - task: DownloadBuildArtifacts@1
+      inputs:
+        buildType: 'current'
+        downloadType: 'single'
+        artifactName: 'drop'
+        downloadPath: '$(System.ArtifactsDirectory)'
+        cleanDestinationFolder: true
+
+    - task: AzureFunctionApp@2
+      inputs:
+        connectedServiceNameARM: 'Azure subscription 1(970fcef5-9c23-4f7d-a11b-5a96d104f066)'
+        appType: 'functionApp'
+        appName: '$(AzureFunctionAppName)'
+        deployToSlotOrASE: true
+        resourceGroupName: 'Guro'
+        slotName: 'production'
+        package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
+        deploymentMethod: 'runFromPackage'
