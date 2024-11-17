@@ -1,0 +1,23 @@
+C:\UQAC\Azure Service Bus\Azure Service Bus\bin\Debug\net8.0\Azure Service Bus.exe
+C:\UQAC\Azure Service Bus\Azure Service Bus\bin\Debug\net8.0\Azure Service Bus.deps.json
+C:\UQAC\Azure Service Bus\Azure Service Bus\bin\Debug\net8.0\Azure Service Bus.runtimeconfig.json
+C:\UQAC\Azure Service Bus\Azure Service Bus\bin\Debug\net8.0\Azure Service Bus.dll
+C:\UQAC\Azure Service Bus\Azure Service Bus\bin\Debug\net8.0\Azure Service Bus.pdb
+C:\UQAC\Azure Service Bus\Azure Service Bus\bin\Debug\net8.0\Azure.Core.dll
+C:\UQAC\Azure Service Bus\Azure Service Bus\bin\Debug\net8.0\Azure.Core.Amqp.dll
+C:\UQAC\Azure Service Bus\Azure Service Bus\bin\Debug\net8.0\Azure.Messaging.ServiceBus.dll
+C:\UQAC\Azure Service Bus\Azure Service Bus\bin\Debug\net8.0\Microsoft.Azure.Amqp.dll
+C:\UQAC\Azure Service Bus\Azure Service Bus\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\UQAC\Azure Service Bus\Azure Service Bus\bin\Debug\net8.0\System.ClientModel.dll
+C:\UQAC\Azure Service Bus\Azure Service Bus\bin\Debug\net8.0\System.Memory.Data.dll
+C:\UQAC\Azure Service Bus\Azure Service Bus\obj\Debug\net8.0\Azure Service Bus.csproj.AssemblyReference.cache
+C:\UQAC\Azure Service Bus\Azure Service Bus\obj\Debug\net8.0\Azure Service Bus.GeneratedMSBuildEditorConfig.editorconfig
+C:\UQAC\Azure Service Bus\Azure Service Bus\obj\Debug\net8.0\Azure Service Bus.AssemblyInfoInputs.cache
+C:\UQAC\Azure Service Bus\Azure Service Bus\obj\Debug\net8.0\Azure Service Bus.AssemblyInfo.cs
+C:\UQAC\Azure Service Bus\Azure Service Bus\obj\Debug\net8.0\Azure Service Bus.csproj.CoreCompileInputs.cache
+C:\UQAC\Azure Service Bus\Azure Service Bus\obj\Debug\net8.0\Azure Se.9A0E4DCD.Up2Date
+C:\UQAC\Azure Service Bus\Azure Service Bus\obj\Debug\net8.0\Azure Service Bus.dll
+C:\UQAC\Azure Service Bus\Azure Service Bus\obj\Debug\net8.0\refint\Azure Service Bus.dll
+C:\UQAC\Azure Service Bus\Azure Service Bus\obj\Debug\net8.0\Azure Service Bus.pdb
+C:\UQAC\Azure Service Bus\Azure Service Bus\obj\Debug\net8.0\Azure Service Bus.genruntimeconfig.cache
+C:\UQAC\Azure Service Bus\Azure Service Bus\obj\Debug\net8.0\ref\Azure Service Bus.dll
