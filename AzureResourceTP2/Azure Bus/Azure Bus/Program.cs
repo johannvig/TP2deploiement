@@ -6,8 +6,8 @@ namespace ServiceBusApp
 {
     class Program
     {
-        private const string connectionString = "Endpoint=sb://azuresb-demo.servicebus.windows.net/;SharedAccessKeyName=AccessPolicy;SharedAccessKey=W8+tkazvT4L3D8Z9qRP7D1faJyQavR+ab+ASbJFalKU=;EntityPath=messagequeue";
-        private const string queueName = "messagequeue";
+        private const string connectionString = "Endpoint=sb://tp2gurosb.servicebus.windows.net/;SharedAccessKeyName=Policy;SharedAccessKey=l2MN/9FiV1swfGwMtnNvexbvbscr6Mlya+ASbJBLUeo=;EntityPath=tp2queue";
+        private const string queueName = "tp2queue";
 
         static async Task Main(string[] args)
         {

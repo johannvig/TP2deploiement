@@ -21,3 +21,6 @@ C:\UQAC\Azure Service Bus\Azure Service Bus\obj\Debug\net8.0\refint\Azure Servic
 C:\UQAC\Azure Service Bus\Azure Service Bus\obj\Debug\net8.0\Azure Service Bus.pdb
 C:\UQAC\Azure Service Bus\Azure Service Bus\obj\Debug\net8.0\Azure Service Bus.genruntimeconfig.cache
 C:\UQAC\Azure Service Bus\Azure Service Bus\obj\Debug\net8.0\ref\Azure Service Bus.dll
+C:\xampp\htdocs\SAE4_new\TP2deploiement\AzureResourceTP2\Azure Bus\Azure Bus\obj\Debug\net8.0\Azure Service Bus.dll
+C:\xampp\htdocs\SAE4_new\TP2deploiement\AzureResourceTP2\Azure Bus\Azure Bus\obj\Debug\net8.0\refint\Azure Service Bus.dll
+C:\xampp\htdocs\SAE4_new\TP2deploiement\AzureResourceTP2\Azure Bus\Azure Bus\obj\Debug\net8.0\Azure Service Bus.pdb
