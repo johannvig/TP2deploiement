@@ -16,7 +16,7 @@ steps:
     azureResourceManagerConnection: 'Azure subscription 1(1)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
     subscriptionId: '4752c137-48fe-4a21-ac6e-435c1d51dbe9'
     action: 'Create Or Update Resource Group'
-    resourceGroupName: 'tp2SC'
+    resourceGroupName: 'tp2'
     location: 'East US'
     templateLocation: 'Linked artifact'
     csmFile: '$(Build.SourcesDirectory)\AzureResourceTP2\azuredeploy.json'
