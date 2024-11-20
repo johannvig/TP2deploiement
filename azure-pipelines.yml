@@ -1,24 +1,105 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
-- main
+  - main
 
 pool: 'default'
 
+variables:
+  AzureAppFunction: 'FunctionApp' # Dossier contenant le projet Azure Function
+  AzureFunctionAppName: 'TP2GuroFunction' # Nom de la Function App sur Azure
 
-steps:
-- task: AzureResourceManagerTemplateDeployment@3
-  inputs:
-    deploymentScope: 'Resource Group'
-    azureResourceManagerConnection: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
-    subscriptionId: '4752c137-48fe-4a21-ac6e-435c1d51dbe9'
-    action: 'Create Or Update Resource Group'
-    resourceGroupName: 'tp2SC'
-    location: 'East US'
-    templateLocation: 'Linked artifact'
-    csmFile: '$(Build.SourcesDirectory)\AzureResourceTP2\azuredeploy.json'
-    csmParametersFile: '$(Build.SourcesDirectory)\AzureResourceTP2\azuredeploy.parameters.json'
-    deploymentMode: 'Incremental'
+stages:
+  - stage: DeployInfrastructure
+    displayName: 'Deploy Infrastructure'
+    jobs:
+      - job: DeployInfrastructure
+        displayName: 'ARM Deployment'
+        steps:
+          - task: AzureResourceManagerTemplateDeployment@3
+            inputs:
+              deploymentScope: 'Resource Group'
+              azureResourceManagerConnection: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
+              subscriptionId: '4752c137-48fe-4a21-ac6e-435c1d51dbe9'
+              action: 'Create Or Update Resource Group'
+              resourceGroupName: 'tp2SC'
+              location: 'East US'
+              templateLocation: 'Linked artifact'
+              csmFile: '$(Build.SourcesDirectory)\AzureResourceTP2\azuredeploy.json'
+              csmParametersFile: '$(Build.SourcesDirectory)\AzureResourceTP2\azuredeploy.parameters.json'
+              deploymentMode: 'Incremental'
+
+  - stage: Function
+    displayName: 'Function Deployment'
+    dependsOn: DeployInfrastructure
+    jobs:
+      - job: FunctionBuild
+        displayName: 'Function Build'
+
+        steps:
+          - task: DotNetCoreCLI@2
+            displayName: 'Restore Project'
+            inputs:
+              command: 'restore'
+              projects: '$(Build.SourcesDirectory)/$(AzureAppFunction)/*.csproj'
+              
+          - task: DotNetCoreCLI@2
+            displayName: 'Build Azure Function'
+            inputs:
+              command: 'build'
+              projects: '$(Build.SourcesDirectory)/$(AzureAppFunction)/*.csproj'
+              arguments: '--configuration Release --output $(Build.BinariesDirectory)'
+
+          - task: DotNetCoreCLI@2
+            displayName: 'Publish Azure Function'
+            inputs:
+              command: 'publish'
+              projects: '$(Build.SourcesDirectory)/$(AzureAppFunction)/*.csproj'
+              arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)'
+              publishWebProjects: false
+              zipAfterPublish: true
+              modifyOutputPath: false
+
+          - task: PublishBuildArtifacts@1
+            displayName: 'Publish Build Artifacts'
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              ArtifactName: 'drop'
+              publishLocation: 'Container'
+
+      - job: FunctionDeploy
+        displayName: 'Function Deployment'
+        dependsOn: FunctionBuild
+        steps:
+          - checkout: none
+          - task: DownloadBuildArtifacts@1
+            displayName: 'Download Build Artifacts'
+            inputs:
+              buildType: 'current'
+              artifactName: 'drop'
+              downloadPath: '$(System.ArtifactsDirectory)'
+
+          - task: AzureFunctionApp@2
+            displayName: 'Deploy Function to Azure'
+            inputs:
+              connectedServiceNameARM: 'Azure subscription 1(970fcef5-9c23-4f7d-a11b-5a96d104f066)'
+              appType: 'functionApp'
+              appName: '$(AzureFunctionAppName)'
+              deployToSlotOrASE: true
+              resourceGroupName: 'tp2SC'
+              slotName: 'production'
+              package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
+              deploymentMethod: 'runFromPackage'
+
+          - task: DeleteFiles@1
+            displayName: 'Clean up temporary files'
+            inputs:
+              SourceFolder: '$(System.ArtifactsDirectory)'
+
+          - task: PowerShell@2
+            displayName: 'Test deployed function'
+            inputs:
+              targetType: 'inline'
+              script: |
+                $response = Invoke-WebRequest -Uri "https://$(AzureFunctionAppName).azurewebsites.net/api/HttpTriggerFunction" -Method GET
+                if ($response.StatusCode -ne 200) {
+                  throw "Function App did not return a successful response!"
+                }
