@@ -80,7 +80,7 @@ stages:
           - task: AzureFunctionApp@2
             displayName: 'Deploy Function to Azure'
             inputs:
-              connectedServiceNameARM: 'Azure subscription 1(970fcef5-9c23-4f7d-a11b-5a96d104f066)'
+              connectedServiceNameARM: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
               appType: 'functionApp'
               appName: '$(AzureFunctionAppName)'
               deployToSlotOrASE: true
