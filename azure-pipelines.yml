@@ -4,7 +4,7 @@ trigger:
 pool: 'default'
 
 variables:
-  AzureAppFunction: 'AzureResourceTP2/FunctionApp/FunctionApp' # Dossier contenant le projet Azure Function
+  AzureAppFunction: 'AzureResourceTP2/FunctionApp/Function' # Dossier contenant le projet Azure Function
   AzureFunctionAppName: 'TP2GuroFunction' # Nom de la Function App sur Azure
 
 stages:
