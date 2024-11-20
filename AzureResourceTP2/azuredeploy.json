@@ -19,7 +19,7 @@
             "type": "String"
         },
         "namespaces_TP2GuroSB_name": {
-            "defaultValue": "TP2GuroSB",
+            "defaultValue": "TP2GuroSB123",
             "type": "String"
         },
         "storageAccounts_tp2scb227_name": {
