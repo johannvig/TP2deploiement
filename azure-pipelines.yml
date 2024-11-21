@@ -99,7 +99,7 @@ stages:
             inputs:
               targetType: 'filePath'
               filePath: '$(Build.SourcesDirectory)/AzureResourceTP2/FunctionApp/FunctionApp/Deploy-AzureResourceGroup.ps1'
-              arguments: '-Param1 Value1 -Param2 Value2'
+              arguments: '-ResourceGroupLocation "East US" -ResourceGroupName "tp2SC" -TemplateFile "$(Build.SourcesDirectory)/AzureResourceTP2/azuredeploy.json" -TemplateParametersFile "$(Build.SourcesDirectory)/AzureResourceTP2/azuredeploy.parameters.json"'
               pwsh: true
 
           - task: PowerShell@2
