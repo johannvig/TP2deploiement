@@ -93,6 +93,14 @@ stages:
             displayName: 'Clean up temporary files'
             inputs:
               SourceFolder: '$(System.ArtifactsDirectory)'
+              
+          - task: PowerShell@2
+            displayName: 'Execute Deploy-AzureResourceGroup.ps1'
+            inputs:
+              targetType: 'filePath'
+              filePath: '$(Build.SourcesDirectory)/AzureResourceTP2/FunctionApp/FunctionApp/Deploy-AzureResourceGroup.ps1'
+              arguments: '-Param1 Value1 -Param2 Value2'
+              pwsh: true
 
           - task: PowerShell@2
             displayName: 'Test deployed function'
