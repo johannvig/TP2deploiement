@@ -17,7 +17,7 @@ stages:
           - task: AzureResourceManagerTemplateDeployment@3
             inputs:
               deploymentScope: 'Resource Group'
-              azureResourceManagerConnection: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
+              azureResourceManagerConnection: 'Azure subscription 1(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
               subscriptionId: '4752c137-48fe-4a21-ac6e-435c1d51dbe9'
               action: 'Create Or Update Resource Group'
               resourceGroupName: 'tp2SC'
