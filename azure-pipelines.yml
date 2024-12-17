@@ -14,6 +14,18 @@ stages:
       - job: DeployInfrastructure
         displayName: 'ARM Deployment'
         steps:
+          - task: AzureCLI@2
+            displayName: 'Create Log Analytics Workspace'
+            inputs:
+              azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                az monitor log-analytics workspace create \
+                  --resource-group DefaultResourceGroup-CCAN \
+                  --workspace-name DefaultWorkspace-4752c137-48fe-4a21-ac6e-435c1d51dbe9-CCAN \
+                  --location "East US"
+
           - task: AzureResourceManagerTemplateDeployment@3
             inputs:
               deploymentScope: 'Resource Group'
