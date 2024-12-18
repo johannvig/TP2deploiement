@@ -22,7 +22,7 @@ stages:
             displayName: 'Create Resource Group'
             inputs:
               azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
-              scriptType: 'bash'
+              scriptType: 'batch'
               scriptLocation: 'inlineScript'
               inlineScript: |
                 az group create --name tp2SC --location "$(Location)"
@@ -32,7 +32,7 @@ stages:
             displayName: 'Create Storage Account'
             inputs:
               azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
-              scriptType: 'bash'
+              scriptType: 'batch'
               scriptLocation: 'inlineScript'
               inlineScript: |
                 az storage account create --name $(StorageAccountName) --resource-group tp2SC --location "$(Location)" --sku Standard_LRS
@@ -42,7 +42,7 @@ stages:
             displayName: 'Create Service Bus Namespace and Queue'
             inputs:
               azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
-              scriptType: 'bash'
+              scriptType: 'batch'
               scriptLocation: 'inlineScript'
               inlineScript: |
                 az servicebus namespace create --name $(ServiceBusNamespace) --resource-group tp2SC --location "$(Location)"
@@ -53,7 +53,7 @@ stages:
             displayName: 'Deploy Function App'
             inputs:
               azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
-              scriptType: 'bash'
+              scriptType: 'batch'
               scriptLocation: 'inlineScript'
               inlineScript: |
                 az functionapp create --name $(AzureFunctionAppName) --storage-account $(StorageAccountName) --resource-group tp2SC --consumption-plan-location "$(Location)" --runtime dotnet --functions-version 4
