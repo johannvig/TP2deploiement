@@ -16,7 +16,7 @@ stages:
       - job: DeployInfrastructure
         displayName: 'Infrastructure Deployment'
         steps:
-          # Création ou vérification du groupe de ressources tp2SC
+          # Vérification ou création du groupe de ressources tp2SC
           - task: AzureCLI@2
             displayName: 'Check or Create Resource Group tp2SC'
             inputs:
@@ -54,48 +54,6 @@ stages:
                   --location "$(Location)" ^
                   --sku Standard_LRS
 
-          # Création de l'Action Group
-          - task: AzureCLI@2
-            displayName: 'Create Action Group'
-            inputs:
-              azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
-              scriptType: 'batch'
-              scriptLocation: 'inlineScript'
-              inlineScript: |
-                az monitor action-group create ^
-                  --resource-group DefaultResourceGroup-CCAN ^
-                  --name "ApplicationInsightsSmartDetection" ^
-                  --short-name "SmartDetect"
-
-          # Création de l'instance Application Insights
-          - task: AzureCLI@2
-            displayName: 'Create Application Insights'
-            inputs:
-              azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
-              scriptType: 'batch'
-              scriptLocation: 'inlineScript'
-              inlineScript: |
-                az monitor app-insights component create ^
-                  --app fonctionappvijo ^
-                  --location "$(Location)" ^
-                  --resource-group tp2SC ^
-                  --application-type web
-
-          # Création de la Function App Plan
-          - task: AzureCLI@2
-            displayName: 'Create App Service Plan'
-            inputs:
-              azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
-              scriptType: 'batch'
-              scriptLocation: 'inlineScript'
-              inlineScript: |
-                az appservice plan create ^
-                  --name ASP-fonctionappvijogroup-96bd ^
-                  --resource-group tp2SC ^
-                  --location "$(Location)" ^
-                  --sku Y1 ^
-                  --is-linux false
-
           # Création de la Function App
           - task: AzureCLI@2
             displayName: 'Create Function App'
@@ -110,7 +68,8 @@ stages:
                   --resource-group tp2SC ^
                   --consumption-plan-location "$(Location)" ^
                   --runtime dotnet ^
-                  --runtime-version 7.0
+                  --runtime-version 7.0 ^
+                  --functions-version 4
 
           # Configuration des conteneurs pour Azure Functions
           - task: AzureCLI@2
@@ -129,4 +88,3 @@ stages:
                   --name azure-webjobs-secrets ^
                   --account-name $(StorageAccountName) ^
                   --public-access off
-
