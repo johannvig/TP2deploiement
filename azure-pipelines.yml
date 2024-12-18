@@ -81,8 +81,9 @@ stages:
                   --resource-group tp2SC ^
                   --consumption-plan-location "eastus" ^
                   --runtime dotnet ^
-                  --runtime-version 7.0 ^
+                  --runtime-version 8 ^
                   --functions-version 4
+
 
           # Configuration des conteneurs pour Azure Functions
           - task: AzureCLI@2
