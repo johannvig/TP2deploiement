@@ -6,7 +6,8 @@ pool: 'default'
 variables:
   AzureAppFunction: 'AzureResourceTP2/FunctionApp/Function' # Dossier contenant le projet Azure Function
   AzureFunctionAppName: 'TP2GuroFunction'                   # Nom de la Function App sur Azure
-  StorageAccountName: 'tp2storageaccountbis2'   # Nom unique du compte de stockage basé sur l'ID de Build
+  StorageAccountName: 'tp2storageaccountbis2'               # Nom unique du compte de stockage basé sur l'ID de Build
+  Location: 'Central US'                                    # Emplacement valide pour les plans de consommation
 
 stages:
   - stage: DeployInfrastructure
@@ -25,7 +26,7 @@ stages:
               inlineScript: |
                 az group create ^
                   --name tp2SC ^
-                  --location "East US"
+                  --location "$(Location)"
 
           # Étape pour créer le groupe de ressources DefaultResourceGroup-CCAN
           - task: AzureCLI@2
@@ -37,7 +38,7 @@ stages:
               inlineScript: |
                 az group create ^
                   --name DefaultResourceGroup-CCAN ^
-                  --location "East US"
+                  --location "$(Location)"
 
           # Étape pour créer le compte de stockage
           - task: AzureCLI@2
@@ -50,7 +51,7 @@ stages:
                 az storage account create ^
                   --name $(StorageAccountName) ^
                   --resource-group tp2SC ^
-                  --location "East US" ^
+                  --location "$(Location)" ^
                   --sku Standard_LRS
 
           # Étape pour créer le Log Analytics Workspace
@@ -64,7 +65,7 @@ stages:
                 az monitor log-analytics workspace create ^
                   --resource-group DefaultResourceGroup-CCAN ^
                   --workspace-name DefaultWorkspace-4752c137-48fe-4a21-ac6e-435c1d51dbe9-CCAN ^
-                  --location "East US"
+                  --location "$(Location)"
 
           # Étape pour créer la Function App
           - task: AzureCLI@2
@@ -77,7 +78,7 @@ stages:
                 az functionapp show --name $(AzureFunctionAppName) --resource-group tp2SC || ^
                 az functionapp create ^
                   --resource-group tp2SC ^
-                  --consumption-plan-location "East US" ^
+                  --consumption-plan-location "$(Location)" ^
                   --runtime dotnet ^
                   --runtime-version 7.0 ^
                   --functions-version 4 ^
@@ -93,7 +94,7 @@ stages:
               subscriptionId: '4752c137-48fe-4a21-ac6e-435c1d51dbe9'
               action: 'Create Or Update Resource Group'
               resourceGroupName: 'tp2SC'
-              location: 'East US'
+              location: "$(Location)"
               templateLocation: 'Linked artifact'
               csmFile: '$(Build.SourcesDirectory)\AzureResourceTP2\azuredeploy.json'
               csmParametersFile: '$(Build.SourcesDirectory)\AzureResourceTP2\azuredeploy.parameters.json'
