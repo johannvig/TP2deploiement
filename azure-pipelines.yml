@@ -15,10 +15,21 @@ stages:
         displayName: 'ARM Deployment'
         steps:
           - task: AzureCLI@2
+            displayName: 'Create Resource Group'
+            inputs:
+              azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
+              scriptType: 'batch'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                az group create ^
+                  --name DefaultResourceGroup-CCAN ^
+                  --location "East US"
+
+          - task: AzureCLI@2
             displayName: 'Create Log Analytics Workspace'
             inputs:
               azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
-              scriptType: 'batch'  # Utilisation de batch au lieu de bash
+              scriptType: 'batch'
               scriptLocation: 'inlineScript'
               inlineScript: |
                 az monitor log-analytics workspace create ^
@@ -26,8 +37,8 @@ stages:
                   --workspace-name DefaultWorkspace-4752c137-48fe-4a21-ac6e-435c1d51dbe9-CCAN ^
                   --location "East US"
 
-
           - task: AzureResourceManagerTemplateDeployment@3
+            displayName: 'Deploy ARM Template'
             inputs:
               deploymentScope: 'Resource Group'
               azureResourceManagerConnection: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
@@ -46,14 +57,13 @@ stages:
     jobs:
       - job: FunctionBuild
         displayName: 'Function Build'
-
         steps:
           - task: DotNetCoreCLI@2
             displayName: 'Restore Project'
             inputs:
               command: 'restore'
               projects: '$(Build.SourcesDirectory)/$(AzureAppFunction)/*.csproj'
-              
+
           - task: DotNetCoreCLI@2
             displayName: 'Build Azure Function'
             inputs:
@@ -106,7 +116,7 @@ stages:
             displayName: 'Clean up temporary files'
             inputs:
               SourceFolder: '$(System.ArtifactsDirectory)'
-              
+
           - task: PowerShell@2
             displayName: 'Execute Deploy-AzureResourceGroup.ps1'
             inputs:
