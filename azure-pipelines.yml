@@ -6,7 +6,7 @@ pool: 'default'
 variables:
   AzureAppFunction: 'AzureResourceTP2/FunctionApp/Function' # Dossier contenant le projet Azure Function
   AzureFunctionAppName: 'TP2GuroFunction' # Nom de la Function App sur Azure
-  StorageAccountName: 'tp2storageaccount' # Nom du compte de stockage
+  StorageAccountName: 'tp2storageaccountbis' # Nom du compte de stockage
 
 stages:
   - stage: DeployInfrastructure
@@ -34,7 +34,7 @@ stages:
               scriptLocation: 'inlineScript'
               inlineScript: |
                 az storage account create ^
-                  --name tp2storageaccount ^
+                  --name tp2storageaccountbis ^
                   --resource-group tp2SC ^
                   --location "East US" ^
                   --sku Standard_LRS
