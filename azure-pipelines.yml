@@ -4,6 +4,7 @@ trigger:
 pool: 'default'
 
 variables:
+  AzureAppFunction: 'AzureResourceTP2/FunctionApp/Function'
   StorageAccountName: 'tp2storageaccount$(Build.BuildId)'
   ServiceBusNamespace: 'tp2servicebus$(Build.BuildId)'
   QueueName: 'tp2queue'
@@ -77,7 +78,7 @@ stages:
             displayName: 'Publish Blob Trigger Function'
             inputs:
               command: 'publish'
-              projects: 'TP2deploiement/AzureResourceTP2/FunctionApp/Function/Function.csproj'
+              projects: '$(Build.SourcesDirectory)/$(AzureAppFunction)/*.csproj'
               arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)/BlobTrigger'
 
           - task: AzureFunctionApp@2
