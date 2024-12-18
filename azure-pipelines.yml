@@ -18,13 +18,14 @@ stages:
             displayName: 'Create Log Analytics Workspace'
             inputs:
               azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
-              scriptType: 'bash'
+              scriptType: 'batch'  # Utilisation de batch au lieu de bash
               scriptLocation: 'inlineScript'
               inlineScript: |
-                az monitor log-analytics workspace create \
-                  --resource-group DefaultResourceGroup-CCAN \
-                  --workspace-name DefaultWorkspace-4752c137-48fe-4a21-ac6e-435c1d51dbe9-CCAN \
+                az monitor log-analytics workspace create ^
+                  --resource-group DefaultResourceGroup-CCAN ^
+                  --workspace-name DefaultWorkspace-4752c137-48fe-4a21-ac6e-435c1d51dbe9-CCAN ^
                   --location "East US"
+
 
           - task: AzureResourceManagerTemplateDeployment@3
             inputs:
