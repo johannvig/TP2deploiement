@@ -6,7 +6,7 @@ pool: 'default'
 variables:
   AzureAppFunction: 'AzureResourceTP2/FunctionApp/Function' # Dossier contenant le projet Azure Function
   AzureFunctionAppName: 'TP2GuroFunction'                   # Nom de la Function App sur Azure
-  StorageAccountName: 'tp2storageaccount$(Build.BuildId)'   # Nom unique du compte de stockage basé sur l'ID de Build
+  StorageAccountName: 'tp2storageaccountbis2'   # Nom unique du compte de stockage basé sur l'ID de Build
 
 stages:
   - stage: DeployInfrastructure
