@@ -7,16 +7,16 @@ variables:
   AzureAppFunction: 'AzureResourceTP2/FunctionApp/Function'
   AzureFunctionAppName: 'TP2GuroFunction'
   StorageAccountName: 'tp2storageaccount$(Build.BuildId)'
-  Location: 'Central US'  # Mise à jour avec l'emplacement du groupe de ressources existant
+  Location: 'Canada Central'
 
 stages:
   - stage: DeployInfrastructure
     displayName: 'Deploy Infrastructure'
     jobs:
       - job: DeployInfrastructure
-        displayName: 'ARM Deployment'
+        displayName: 'Infrastructure Deployment'
         steps:
-          # Vérification ou création du groupe de ressources tp2SC
+          # Création ou vérification du groupe de ressources tp2SC
           - task: AzureCLI@2
             displayName: 'Check or Create Resource Group tp2SC'
             inputs:
@@ -24,15 +24,11 @@ stages:
               scriptType: 'batch'
               scriptLocation: 'inlineScript'
               inlineScript: |
-                if az group exists --name tp2SC; then
-                  echo "Resource group tp2SC already exists."
-                else
-                  az group create ^
-                    --name tp2SC ^
-                    --location "$(Location)"
-                fi
+                az group create ^
+                  --name tp2SC ^
+                  --location "$(Location)"
 
-          # Vérification ou création du groupe de ressources DefaultResourceGroup-CCAN
+          # Création ou vérification du groupe de ressources DefaultResourceGroup-CCAN
           - task: AzureCLI@2
             displayName: 'Check or Create Resource Group DefaultResourceGroup-CCAN'
             inputs:
@@ -40,13 +36,9 @@ stages:
               scriptType: 'batch'
               scriptLocation: 'inlineScript'
               inlineScript: |
-                if az group exists --name DefaultResourceGroup-CCAN; then
-                  echo "Resource group DefaultResourceGroup-CCAN already exists."
-                else
-                  az group create ^
-                    --name DefaultResourceGroup-CCAN ^
-                    --location "$(Location)"
-                fi
+                az group create ^
+                  --name DefaultResourceGroup-CCAN ^
+                  --location "$(Location)"
 
           # Création du compte de stockage
           - task: AzureCLI@2
@@ -62,18 +54,47 @@ stages:
                   --location "$(Location)" ^
                   --sku Standard_LRS
 
-          # Création du Log Analytics Workspace
+          # Création de l'Action Group
           - task: AzureCLI@2
-            displayName: 'Create Log Analytics Workspace'
+            displayName: 'Create Action Group'
             inputs:
               azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
               scriptType: 'batch'
               scriptLocation: 'inlineScript'
               inlineScript: |
-                az monitor log-analytics workspace create ^
+                az monitor action-group create ^
                   --resource-group DefaultResourceGroup-CCAN ^
-                  --workspace-name DefaultWorkspace-4752c137-48fe-4a21-ac6e-435c1d51dbe9-CCAN ^
-                  --location "$(Location)"
+                  --name "ApplicationInsightsSmartDetection" ^
+                  --short-name "SmartDetect"
+
+          # Création de l'instance Application Insights
+          - task: AzureCLI@2
+            displayName: 'Create Application Insights'
+            inputs:
+              azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
+              scriptType: 'batch'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                az monitor app-insights component create ^
+                  --app fonctionappvijo ^
+                  --location "$(Location)" ^
+                  --resource-group tp2SC ^
+                  --application-type web
+
+          # Création de la Function App Plan
+          - task: AzureCLI@2
+            displayName: 'Create App Service Plan'
+            inputs:
+              azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
+              scriptType: 'batch'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                az appservice plan create ^
+                  --name ASP-fonctionappvijogroup-96bd ^
+                  --resource-group tp2SC ^
+                  --location "$(Location)" ^
+                  --sku Y1 ^
+                  --is-linux false
 
           # Création de la Function App
           - task: AzureCLI@2
@@ -83,95 +104,29 @@ stages:
               scriptType: 'batch'
               scriptLocation: 'inlineScript'
               inlineScript: |
-                az functionapp show --name $(AzureAppFunction) --resource-group tp2SC || ^
                 az functionapp create ^
+                  --name $(AzureFunctionAppName) ^
+                  --storage-account $(StorageAccountName) ^
                   --resource-group tp2SC ^
                   --consumption-plan-location "$(Location)" ^
                   --runtime dotnet ^
-                  --runtime-version 7.0 ^
-                  --functions-version 4 ^
-                  --name $(AzureFunctionAppName) ^
-                  --storage-account $(StorageAccountName)
+                  --runtime-version 7.0
 
-
-          # Étape pour déployer l'ARM Template
-          - task: AzureResourceManagerTemplateDeployment@3
-            displayName: 'Deploy ARM Template'
+          # Configuration des conteneurs pour Azure Functions
+          - task: AzureCLI@2
+            displayName: 'Configure Blob Containers'
             inputs:
-              deploymentScope: 'Resource Group'
-              azureResourceManagerConnection: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
-              subscriptionId: '4752c137-48fe-4a21-ac6e-435c1d51dbe9'
-              action: 'Create Or Update Resource Group'
-              resourceGroupName: 'tp2SC'
-              location: "$(Location)"
-              templateLocation: 'Linked artifact'
-              csmFile: '$(Build.SourcesDirectory)\AzureResourceTP2\azuredeploy.json'
-              csmParametersFile: '$(Build.SourcesDirectory)\AzureResourceTP2\azuredeploy.parameters.json'
-              deploymentMode: 'Incremental'
+              azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
+              scriptType: 'batch'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                az storage container create ^
+                  --name azure-webjobs-hosts ^
+                  --account-name $(StorageAccountName) ^
+                  --public-access off
 
-  - stage: Function
-    displayName: 'Function Deployment'
-    dependsOn: DeployInfrastructure
-    jobs:
-      - job: FunctionBuild
-        displayName: 'Function Build'
-        steps:
-          # Étape pour restaurer le projet .NET
-          - task: DotNetCoreCLI@2
-            displayName: 'Restore Project'
-            inputs:
-              command: 'restore'
-              projects: '$(Build.SourcesDirectory)/$(AzureAppFunction)/*.csproj'
+                az storage container create ^
+                  --name azure-webjobs-secrets ^
+                  --account-name $(StorageAccountName) ^
+                  --public-access off
 
-          # Étape pour construire le projet .NET
-          - task: DotNetCoreCLI@2
-            displayName: 'Build Azure Function'
-            inputs:
-              command: 'build'
-              projects: '$(Build.SourcesDirectory)/$(AzureAppFunction)/*.csproj'
-              arguments: '--configuration Release --output $(Build.BinariesDirectory)'
-
-          # Étape pour publier le projet .NET
-          - task: DotNetCoreCLI@2
-            displayName: 'Publish Azure Function'
-            inputs:
-              command: 'publish'
-              projects: '$(Build.SourcesDirectory)/$(AzureAppFunction)/*.csproj'
-              arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)'
-              publishWebProjects: false
-              zipAfterPublish: true
-              modifyOutputPath: false
-
-          # Étape pour publier les artefacts
-          - task: PublishBuildArtifacts@1
-            displayName: 'Publish Build Artifacts'
-            inputs:
-              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-              ArtifactName: 'drop'
-              publishLocation: 'Container'
-
-      - job: FunctionDeploy
-        displayName: 'Function Deployment'
-        dependsOn: FunctionBuild
-        steps:
-          # Étape pour télécharger les artefacts
-          - checkout: none
-          - task: DownloadBuildArtifacts@1
-            displayName: 'Download Build Artifacts'
-            inputs:
-              buildType: 'current'
-              artifactName: 'drop'
-              downloadPath: '$(System.ArtifactsDirectory)'
-
-          # Étape pour déployer la Function App
-          - task: AzureFunctionApp@2
-            displayName: 'Deploy Function to Azure'
-            inputs:
-              connectedServiceNameARM: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
-              appType: 'functionApp'
-              appName: '$(AzureFunctionAppName)'
-              deployToSlotOrASE: true
-              resourceGroupName: 'tp2SC'
-              slotName: 'production'
-              package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
-              deploymentMethod: 'runFromPackage'
