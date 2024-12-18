@@ -16,14 +16,14 @@ stages:
         displayName: 'ARM Deployment'
         steps:
           - task: AzureCLI@2
-            displayName: 'Create Resource Group'
+            displayName: 'Create Resource Group tp2SC'
             inputs:
               azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
               scriptType: 'batch'
               scriptLocation: 'inlineScript'
               inlineScript: |
                 az group create ^
-                  --name DefaultResourceGroup-CCAN ^
+                  --name tp2SC ^
                   --location "East US"
 
           - task: AzureCLI@2
@@ -34,7 +34,7 @@ stages:
               scriptLocation: 'inlineScript'
               inlineScript: |
                 az storage account create ^
-                  --name $(StorageAccountName) ^
+                  --name tp2storageaccount ^
                   --resource-group tp2SC ^
                   --location "East US" ^
                   --sku Standard_LRS
