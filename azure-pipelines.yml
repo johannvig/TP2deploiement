@@ -6,6 +6,7 @@ pool: 'default'
 variables:
   AzureAppFunction: 'AzureResourceTP2/FunctionApp/Function' # Dossier contenant le projet Azure Function
   AzureFunctionAppName: 'TP2GuroFunction' # Nom de la Function App sur Azure
+  StorageAccountName: 'tp2storageaccount' # Nom du compte de stockage
 
 stages:
   - stage: DeployInfrastructure
@@ -24,6 +25,19 @@ stages:
                 az group create ^
                   --name DefaultResourceGroup-CCAN ^
                   --location "East US"
+
+          - task: AzureCLI@2
+            displayName: 'Create Storage Account'
+            inputs:
+              azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
+              scriptType: 'batch'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                az storage account create ^
+                  --name $(StorageAccountName) ^
+                  --resource-group tp2SC ^
+                  --location "East US" ^
+                  --sku Standard_LRS
 
           - task: AzureCLI@2
             displayName: 'Create Log Analytics Workspace'
@@ -52,7 +66,7 @@ stages:
                   --runtime-version 7.0 ^
                   --functions-version 4 ^
                   --name $(AzureFunctionAppName) ^
-                  --storage-account <StorageAccountName>
+                  --storage-account $(StorageAccountName)
 
           - task: AzureResourceManagerTemplateDeployment@3
             displayName: 'Deploy ARM Template'
@@ -128,25 +142,3 @@ stages:
               slotName: 'production'
               package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
               deploymentMethod: 'runFromPackage'
-
-          - task: DeleteFiles@1
-            displayName: 'Clean up temporary files'
-            inputs:
-              SourceFolder: '$(System.ArtifactsDirectory)'
-
-          - task: PowerShell@2
-            displayName: 'Execute Deploy-AzureResourceGroup.ps1'
-            inputs:
-              targetType: 'filePath'
-              filePath: '$(Build.SourcesDirectory)/AzureResourceTP2/FunctionApp/FunctionApp/Deploy-AzureResourceGroup.ps1'
-              arguments: '-ResourceGroupLocation "East US" -ResourceGroupName "tp2SC" -TemplateFile "$(Build.SourcesDirectory)/AzureResourceTP2/azuredeploy.json" -TemplateParametersFile "$(Build.SourcesDirectory)/AzureResourceTP2/azuredeploy.parameters.json"'
-              pwsh: true
-
-          - task: PowerShell@2
-            displayName: 'Test deployed function'
-            inputs:
-              targetType: 'inline'
-              script: |
-                $response = Invoke-WebRequest -Uri "https://$(AzureFunctionAppName).azurewebsites.net/api/HttpTriggerFunction" -Method GET
-                if ($response.StatusCode -ne 200) {
-                  throw "Function App did not return a successful response!"
