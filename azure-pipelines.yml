@@ -42,17 +42,23 @@ stages:
 
           # Création du compte de stockage
           - task: AzureCLI@2
-            displayName: 'Create Storage Account'
+            displayName: 'Check or Create Storage Account'
             inputs:
               azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
               scriptType: 'batch'
               scriptLocation: 'inlineScript'
               inlineScript: |
-                az storage account create ^
-                  --name $(StorageAccountName) ^
-                  --resource-group tp2SC ^
-                  --location "$(Location)" ^
-                  --sku Standard_LRS
+                if az storage account check-name --name $(StorageAccountName) --query "nameAvailable" --output tsv | findstr true; then
+                  echo "Creating storage account: $(StorageAccountName)"
+                  az storage account create ^
+                    --name $(StorageAccountName) ^
+                    --resource-group tp2SC ^
+                    --location "$(Location)" ^
+                    --sku Standard_LRS
+                else
+                  echo "Storage account $(StorageAccountName) already exists."
+                fi
+
 
           # Création de la Function App
           - task: AzureCLI@2
