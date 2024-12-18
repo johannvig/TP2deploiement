@@ -54,7 +54,17 @@ stages:
                   --location "$(Location)" ^
                   --sku Standard_LRS
 
-          # Étape pour créer le Log Analytics Workspace
+          - task: AzureCLI@2
+            displayName: 'Create Resource Group for Log Analytics'
+            inputs:
+              azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
+              scriptType: 'batch'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                az group create ^
+                  --name DefaultResourceGroup-CCAN ^
+                  --location "East US"
+
           - task: AzureCLI@2
             displayName: 'Create Log Analytics Workspace'
             inputs:
@@ -65,7 +75,8 @@ stages:
                 az monitor log-analytics workspace create ^
                   --resource-group DefaultResourceGroup-CCAN ^
                   --workspace-name DefaultWorkspace-4752c137-48fe-4a21-ac6e-435c1d51dbe9-CCAN ^
-                  --location "$(Location)"
+                  --location "East US"
+
 
           # Étape pour créer la Function App
           - task: AzureCLI@2
