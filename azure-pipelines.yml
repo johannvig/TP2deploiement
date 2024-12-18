@@ -56,7 +56,14 @@ stages:
               scriptType: 'batch'
               scriptLocation: 'inlineScript'
               inlineScript: |
-                az functionapp create --name $(AzureFunctionAppName) --storage-account $(StorageAccountName) --resource-group tp2SC --consumption-plan-location "$(Location)" --runtime dotnet --functions-version 4
+                az functionapp create ^
+                  --name $(AzureFunctionAppName) ^
+                  --storage-account $(StorageAccountName) ^
+                  --resource-group tp2SC ^
+                  --consumption-plan-location "eastus" ^
+                  --runtime dotnet ^
+                  --runtime-version 8 ^
+                  --functions-version 4
 
   - stage: DeployFunctions
     displayName: 'Deploy Azure Functions'
