@@ -5,8 +5,8 @@ pool: 'default'
 
 variables:
   AzureAppFunction: 'AzureResourceTP2/FunctionApp/Function' # Dossier contenant le projet Azure Function
-  AzureFunctionAppName: 'TP2GuroFunction' # Nom de la Function App sur Azure
-  StorageAccountName: 'tp2storageaccountbis' # Nom du compte de stockage
+  AzureFunctionAppName: 'TP2GuroFunction'                   # Nom de la Function App sur Azure
+  StorageAccountName: 'tp2storageaccount$(Build.BuildId)'   # Nom unique du compte de stockage basé sur l'ID de Build
 
 stages:
   - stage: DeployInfrastructure
@@ -15,6 +15,7 @@ stages:
       - job: DeployInfrastructure
         displayName: 'ARM Deployment'
         steps:
+          # Étape pour créer le groupe de ressources tp2SC
           - task: AzureCLI@2
             displayName: 'Create Resource Group tp2SC'
             inputs:
@@ -26,6 +27,19 @@ stages:
                   --name tp2SC ^
                   --location "East US"
 
+          # Étape pour créer le groupe de ressources DefaultResourceGroup-CCAN
+          - task: AzureCLI@2
+            displayName: 'Create Resource Group DefaultResourceGroup-CCAN'
+            inputs:
+              azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
+              scriptType: 'batch'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                az group create ^
+                  --name DefaultResourceGroup-CCAN ^
+                  --location "East US"
+
+          # Étape pour créer le compte de stockage
           - task: AzureCLI@2
             displayName: 'Create Storage Account'
             inputs:
@@ -34,11 +48,12 @@ stages:
               scriptLocation: 'inlineScript'
               inlineScript: |
                 az storage account create ^
-                  --name tp2storageaccountbis ^
+                  --name $(StorageAccountName) ^
                   --resource-group tp2SC ^
                   --location "East US" ^
                   --sku Standard_LRS
 
+          # Étape pour créer le Log Analytics Workspace
           - task: AzureCLI@2
             displayName: 'Create Log Analytics Workspace'
             inputs:
@@ -51,6 +66,7 @@ stages:
                   --workspace-name DefaultWorkspace-4752c137-48fe-4a21-ac6e-435c1d51dbe9-CCAN ^
                   --location "East US"
 
+          # Étape pour créer la Function App
           - task: AzureCLI@2
             displayName: 'Create Function App'
             inputs:
@@ -68,6 +84,7 @@ stages:
                   --name $(AzureFunctionAppName) ^
                   --storage-account $(StorageAccountName)
 
+          # Étape pour déployer l'ARM Template
           - task: AzureResourceManagerTemplateDeployment@3
             displayName: 'Deploy ARM Template'
             inputs:
@@ -89,12 +106,14 @@ stages:
       - job: FunctionBuild
         displayName: 'Function Build'
         steps:
+          # Étape pour restaurer le projet .NET
           - task: DotNetCoreCLI@2
             displayName: 'Restore Project'
             inputs:
               command: 'restore'
               projects: '$(Build.SourcesDirectory)/$(AzureAppFunction)/*.csproj'
 
+          # Étape pour construire le projet .NET
           - task: DotNetCoreCLI@2
             displayName: 'Build Azure Function'
             inputs:
@@ -102,6 +121,7 @@ stages:
               projects: '$(Build.SourcesDirectory)/$(AzureAppFunction)/*.csproj'
               arguments: '--configuration Release --output $(Build.BinariesDirectory)'
 
+          # Étape pour publier le projet .NET
           - task: DotNetCoreCLI@2
             displayName: 'Publish Azure Function'
             inputs:
@@ -112,6 +132,7 @@ stages:
               zipAfterPublish: true
               modifyOutputPath: false
 
+          # Étape pour publier les artefacts
           - task: PublishBuildArtifacts@1
             displayName: 'Publish Build Artifacts'
             inputs:
@@ -123,6 +144,7 @@ stages:
         displayName: 'Function Deployment'
         dependsOn: FunctionBuild
         steps:
+          # Étape pour télécharger les artefacts
           - checkout: none
           - task: DownloadBuildArtifacts@1
             displayName: 'Download Build Artifacts'
@@ -131,6 +153,7 @@ stages:
               artifactName: 'drop'
               downloadPath: '$(System.ArtifactsDirectory)'
 
+          # Étape pour déployer la Function App
           - task: AzureFunctionApp@2
             displayName: 'Deploy Function to Azure'
             inputs:
