@@ -79,7 +79,7 @@ stages:
                   --name $(AzureFunctionAppName) ^
                   --storage-account $(StorageAccountName) ^
                   --resource-group tp2SC ^
-                  --consumption-plan-location "$(Location)" ^
+                  --consumption-plan-location "eastus" ^
                   --runtime dotnet ^
                   --runtime-version 7.0 ^
                   --functions-version 4
