@@ -37,6 +37,23 @@ stages:
                   --workspace-name DefaultWorkspace-4752c137-48fe-4a21-ac6e-435c1d51dbe9-CCAN ^
                   --location "East US"
 
+          - task: AzureCLI@2
+            displayName: 'Create Function App'
+            inputs:
+              azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
+              scriptType: 'batch'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                az functionapp show --name $(AzureFunctionAppName) --resource-group tp2SC || ^
+                az functionapp create ^
+                  --resource-group tp2SC ^
+                  --consumption-plan-location "East US" ^
+                  --runtime dotnet ^
+                  --runtime-version 7.0 ^
+                  --functions-version 4 ^
+                  --name $(AzureFunctionAppName) ^
+                  --storage-account <StorageAccountName>
+
           - task: AzureResourceManagerTemplateDeployment@3
             displayName: 'Deploy ARM Template'
             inputs:
@@ -133,4 +150,3 @@ stages:
                 $response = Invoke-WebRequest -Uri "https://$(AzureFunctionAppName).azurewebsites.net/api/HttpTriggerFunction" -Method GET
                 if ($response.StatusCode -ne 200) {
                   throw "Function App did not return a successful response!"
-                }
