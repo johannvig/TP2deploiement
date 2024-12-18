@@ -40,7 +40,7 @@ stages:
                   --name DefaultResourceGroup-CCAN ^
                   --location "$(Location)"
 
-          # Création du compte de stockage
+                    # Vérification ou création du compte de stockage
           - task: AzureCLI@2
             displayName: 'Check or Create Storage Account'
             inputs:
@@ -48,16 +48,23 @@ stages:
               scriptType: 'batch'
               scriptLocation: 'inlineScript'
               inlineScript: |
-                if az storage account check-name --name $(StorageAccountName) --query "nameAvailable" --output tsv | findstr true; then
+                set STORAGE_EXISTS=0
+                for /f "delims=" %%i in ('az storage account check-name --name $(StorageAccountName) --query "nameAvailable" --output tsv') do (
+                  if %%i==true (
+                    set STORAGE_EXISTS=1
+                  )
+                )
+                if %STORAGE_EXISTS%==1 (
                   echo "Creating storage account: $(StorageAccountName)"
                   az storage account create ^
                     --name $(StorageAccountName) ^
                     --resource-group tp2SC ^
                     --location "$(Location)" ^
                     --sku Standard_LRS
-                else
+                ) else (
                   echo "Storage account $(StorageAccountName) already exists."
-                fi
+                )
+
 
 
           # Création de la Function App
