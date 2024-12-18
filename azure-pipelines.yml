@@ -77,7 +77,7 @@ stages:
             displayName: 'Publish Blob Trigger Function'
             inputs:
               command: 'publish'
-              projects: 'BlobTriggerFunction/BlobTriggerFunction.csproj'
+              projects: 'TP2deploiement/AzureResourceTP2/FunctionApp/Function/Function.csproj'
               arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)/BlobTrigger'
 
           - task: AzureFunctionApp@2
