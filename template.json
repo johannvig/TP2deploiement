@@ -72,7 +72,7 @@
                 "Flow_Type": "Redfield",
                 "Request_Source": "IbizaWebAppExtensionCreate",
                 "RetentionInDays": 90,
-                "WorkspaceResourceId": "[parameters('workspaces_DefaultWorkspace_41734dbc_edac_4915_a1d9_63da50959410_CCAN_externalid')]",
+                "WorkspaceResourceId": "[parameters('workspaces_DefaultWorkspace_4752c137-48fe-4a21-ac6e-435c1d51dbe9_CCAN_externalid')]",
                 "IngestionMode": "LogAnalytics",
                 "publicNetworkAccessForIngestion": "Enabled",
                 "publicNetworkAccessForQuery": "Enabled"
