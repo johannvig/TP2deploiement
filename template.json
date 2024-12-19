@@ -2,20 +2,20 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "sites_fonctionappvijo_name": {
-            "defaultValue": "fonctionappvijo",
+        "sites_fonctionappvijo2_name": {
+            "defaultValue": "fonctionappvijo22",
             "type": "String"
         },
-        "components_fonctionappvijo_name": {
-            "defaultValue": "fonctionappvijo",
+        "components_fonctionappvijo2_name": {
+            "defaultValue": "fonctionappvijo22",
             "type": "String"
         },
-        "serverfarms_ASP_fonctionappvijogroup_96bd_name": {
-            "defaultValue": "ASP-fonctionappvijogroup-96bd",
+        "serverfarms_ASP_fonctionappvijo2group_96bd_name": {
+            "defaultValue": "ASP-fonctionappvijo2group-96bd",
             "type": "String"
         },
-        "storageAccounts_fonctionappvijogrouac7f_name": {
-            "defaultValue": "fonctionappvijogrouzaw",
+        "storageAccounts_fonctionappvijo2grouac7f_name": {
+            "defaultValue": "fonctionappvijo2grouzaw",
             "type": "String"
         },
         "actionGroups_Application_Insights_Smart_Detection_name": {
@@ -64,7 +64,7 @@
         {
             "type": "microsoft.insights/components",
             "apiVersion": "2020-02-02",
-            "name": "[parameters('components_fonctionappvijo_name')]",
+            "name": "[parameters('components_fonctionappvijo2_name')]",
             "location": "canadacentral",
             "kind": "web",
             "properties": {
@@ -81,7 +81,7 @@
         {
             "type": "Microsoft.Storage/storageAccounts",
             "apiVersion": "2023-05-01",
-            "name": "[parameters('storageAccounts_fonctionappvijogrouac7f_name')]",
+            "name": "[parameters('storageAccounts_fonctionappvijo2grouac7f_name')]",
             "location": "canadacentral",
             "sku": {
                 "name": "Standard_LRS",
@@ -118,7 +118,7 @@
         {
             "type": "Microsoft.Web/serverfarms",
             "apiVersion": "2023-12-01",
-            "name": "[parameters('serverfarms_ASP_fonctionappvijogroup_96bd_name')]",
+            "name": "[parameters('serverfarms_ASP_fonctionappvijo2group_96bd_name')]",
             "location": "Canada Central",
             "sku": {
                 "name": "Y1",
@@ -144,10 +144,10 @@
         {
             "type": "microsoft.insights/components/ProactiveDetectionConfigs",
             "apiVersion": "2018-05-01-preview",
-            "name": "[concat(parameters('components_fonctionappvijo_name'), '/degradationindependencyduration')]",
+            "name": "[concat(parameters('components_fonctionappvijo2_name'), '/degradationindependencyduration')]",
             "location": "canadacentral",
             "dependsOn": [
-                "[resourceId('microsoft.insights/components', parameters('components_fonctionappvijo_name'))]"
+                "[resourceId('microsoft.insights/components', parameters('components_fonctionappvijo2_name'))]"
             ],
             "properties": {
                 "ruleDefinitions": {
@@ -168,10 +168,10 @@
         {
             "type": "microsoft.insights/components/ProactiveDetectionConfigs",
             "apiVersion": "2018-05-01-preview",
-            "name": "[concat(parameters('components_fonctionappvijo_name'), '/degradationinserverresponsetime')]",
+            "name": "[concat(parameters('components_fonctionappvijo2_name'), '/degradationinserverresponsetime')]",
             "location": "canadacentral",
             "dependsOn": [
-                "[resourceId('microsoft.insights/components', parameters('components_fonctionappvijo_name'))]"
+                "[resourceId('microsoft.insights/components', parameters('components_fonctionappvijo2_name'))]"
             ],
             "properties": {
                 "ruleDefinitions": {
@@ -192,10 +192,10 @@
         {
             "type": "microsoft.insights/components/ProactiveDetectionConfigs",
             "apiVersion": "2018-05-01-preview",
-            "name": "[concat(parameters('components_fonctionappvijo_name'), '/digestMailConfiguration')]",
+            "name": "[concat(parameters('components_fonctionappvijo2_name'), '/digestMailConfiguration')]",
             "location": "canadacentral",
             "dependsOn": [
-                "[resourceId('microsoft.insights/components', parameters('components_fonctionappvijo_name'))]"
+                "[resourceId('microsoft.insights/components', parameters('components_fonctionappvijo2_name'))]"
             ],
             "properties": {
                 "ruleDefinitions": {
@@ -216,10 +216,10 @@
         {
             "type": "microsoft.insights/components/ProactiveDetectionConfigs",
             "apiVersion": "2018-05-01-preview",
-            "name": "[concat(parameters('components_fonctionappvijo_name'), '/extension_billingdatavolumedailyspikeextension')]",
+            "name": "[concat(parameters('components_fonctionappvijo2_name'), '/extension_billingdatavolumedailyspikeextension')]",
             "location": "canadacentral",
             "dependsOn": [
-                "[resourceId('microsoft.insights/components', parameters('components_fonctionappvijo_name'))]"
+                "[resourceId('microsoft.insights/components', parameters('components_fonctionappvijo2_name'))]"
             ],
             "properties": {
                 "ruleDefinitions": {
@@ -240,10 +240,10 @@
         {
             "type": "microsoft.insights/components/ProactiveDetectionConfigs",
             "apiVersion": "2018-05-01-preview",
-            "name": "[concat(parameters('components_fonctionappvijo_name'), '/extension_canaryextension')]",
+            "name": "[concat(parameters('components_fonctionappvijo2_name'), '/extension_canaryextension')]",
             "location": "canadacentral",
             "dependsOn": [
-                "[resourceId('microsoft.insights/components', parameters('components_fonctionappvijo_name'))]"
+                "[resourceId('microsoft.insights/components', parameters('components_fonctionappvijo2_name'))]"
             ],
             "properties": {
                 "ruleDefinitions": {
@@ -264,10 +264,10 @@
         {
             "type": "microsoft.insights/components/ProactiveDetectionConfigs",
             "apiVersion": "2018-05-01-preview",
-            "name": "[concat(parameters('components_fonctionappvijo_name'), '/extension_exceptionchangeextension')]",
+            "name": "[concat(parameters('components_fonctionappvijo2_name'), '/extension_exceptionchangeextension')]",
             "location": "canadacentral",
             "dependsOn": [
-                "[resourceId('microsoft.insights/components', parameters('components_fonctionappvijo_name'))]"
+                "[resourceId('microsoft.insights/components', parameters('components_fonctionappvijo2_name'))]"
             ],
             "properties": {
                 "ruleDefinitions": {
@@ -288,10 +288,10 @@
         {
             "type": "microsoft.insights/components/ProactiveDetectionConfigs",
             "apiVersion": "2018-05-01-preview",
-            "name": "[concat(parameters('components_fonctionappvijo_name'), '/extension_memoryleakextension')]",
+            "name": "[concat(parameters('components_fonctionappvijo2_name'), '/extension_memoryleakextension')]",
             "location": "canadacentral",
             "dependsOn": [
-                "[resourceId('microsoft.insights/components', parameters('components_fonctionappvijo_name'))]"
+                "[resourceId('microsoft.insights/components', parameters('components_fonctionappvijo2_name'))]"
             ],
             "properties": {
                 "ruleDefinitions": {
@@ -312,10 +312,10 @@
         {
             "type": "microsoft.insights/components/ProactiveDetectionConfigs",
             "apiVersion": "2018-05-01-preview",
-            "name": "[concat(parameters('components_fonctionappvijo_name'), '/extension_securityextensionspackage')]",
+            "name": "[concat(parameters('components_fonctionappvijo2_name'), '/extension_securityextensionspackage')]",
             "location": "canadacentral",
             "dependsOn": [
-                "[resourceId('microsoft.insights/components', parameters('components_fonctionappvijo_name'))]"
+                "[resourceId('microsoft.insights/components', parameters('components_fonctionappvijo2_name'))]"
             ],
             "properties": {
                 "ruleDefinitions": {
@@ -336,10 +336,10 @@
         {
             "type": "microsoft.insights/components/ProactiveDetectionConfigs",
             "apiVersion": "2018-05-01-preview",
-            "name": "[concat(parameters('components_fonctionappvijo_name'), '/extension_traceseveritydetector')]",
+            "name": "[concat(parameters('components_fonctionappvijo2_name'), '/extension_traceseveritydetector')]",
             "location": "canadacentral",
             "dependsOn": [
-                "[resourceId('microsoft.insights/components', parameters('components_fonctionappvijo_name'))]"
+                "[resourceId('microsoft.insights/components', parameters('components_fonctionappvijo2_name'))]"
             ],
             "properties": {
                 "ruleDefinitions": {
@@ -360,10 +360,10 @@
         {
             "type": "microsoft.insights/components/ProactiveDetectionConfigs",
             "apiVersion": "2018-05-01-preview",
-            "name": "[concat(parameters('components_fonctionappvijo_name'), '/longdependencyduration')]",
+            "name": "[concat(parameters('components_fonctionappvijo2_name'), '/longdependencyduration')]",
             "location": "canadacentral",
             "dependsOn": [
-                "[resourceId('microsoft.insights/components', parameters('components_fonctionappvijo_name'))]"
+                "[resourceId('microsoft.insights/components', parameters('components_fonctionappvijo2_name'))]"
             ],
             "properties": {
                 "ruleDefinitions": {
@@ -384,10 +384,10 @@
         {
             "type": "microsoft.insights/components/ProactiveDetectionConfigs",
             "apiVersion": "2018-05-01-preview",
-            "name": "[concat(parameters('components_fonctionappvijo_name'), '/migrationToAlertRulesCompleted')]",
+            "name": "[concat(parameters('components_fonctionappvijo2_name'), '/migrationToAlertRulesCompleted')]",
             "location": "canadacentral",
             "dependsOn": [
-                "[resourceId('microsoft.insights/components', parameters('components_fonctionappvijo_name'))]"
+                "[resourceId('microsoft.insights/components', parameters('components_fonctionappvijo2_name'))]"
             ],
             "properties": {
                 "ruleDefinitions": {
@@ -408,10 +408,10 @@
         {
             "type": "microsoft.insights/components/ProactiveDetectionConfigs",
             "apiVersion": "2018-05-01-preview",
-            "name": "[concat(parameters('components_fonctionappvijo_name'), '/slowpageloadtime')]",
+            "name": "[concat(parameters('components_fonctionappvijo2_name'), '/slowpageloadtime')]",
             "location": "canadacentral",
             "dependsOn": [
-                "[resourceId('microsoft.insights/components', parameters('components_fonctionappvijo_name'))]"
+                "[resourceId('microsoft.insights/components', parameters('components_fonctionappvijo2_name'))]"
             ],
             "properties": {
                 "ruleDefinitions": {
@@ -432,10 +432,10 @@
         {
             "type": "microsoft.insights/components/ProactiveDetectionConfigs",
             "apiVersion": "2018-05-01-preview",
-            "name": "[concat(parameters('components_fonctionappvijo_name'), '/slowserverresponsetime')]",
+            "name": "[concat(parameters('components_fonctionappvijo2_name'), '/slowserverresponsetime')]",
             "location": "canadacentral",
             "dependsOn": [
-                "[resourceId('microsoft.insights/components', parameters('components_fonctionappvijo_name'))]"
+                "[resourceId('microsoft.insights/components', parameters('components_fonctionappvijo2_name'))]"
             ],
             "properties": {
                 "ruleDefinitions": {
@@ -456,9 +456,9 @@
         {
             "type": "Microsoft.Storage/storageAccounts/blobServices",
             "apiVersion": "2023-05-01",
-            "name": "[concat(parameters('storageAccounts_fonctionappvijogrouac7f_name'), '/default')]",
+            "name": "[concat(parameters('storageAccounts_fonctionappvijo2grouac7f_name'), '/default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_fonctionappvijogrouac7f_name'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_fonctionappvijo2grouac7f_name'))]"
             ],
             "sku": {
                 "name": "Standard_LRS",
@@ -477,9 +477,9 @@
         {
             "type": "Microsoft.Storage/storageAccounts/fileServices",
             "apiVersion": "2023-05-01",
-            "name": "[concat(parameters('storageAccounts_fonctionappvijogrouac7f_name'), '/default')]",
+            "name": "[concat(parameters('storageAccounts_fonctionappvijo2grouac7f_name'), '/default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_fonctionappvijogrouac7f_name'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_fonctionappvijo2grouac7f_name'))]"
             ],
             "sku": {
                 "name": "Standard_LRS",
@@ -501,9 +501,9 @@
         {
             "type": "Microsoft.Storage/storageAccounts/queueServices",
             "apiVersion": "2023-05-01",
-            "name": "[concat(parameters('storageAccounts_fonctionappvijogrouac7f_name'), '/default')]",
+            "name": "[concat(parameters('storageAccounts_fonctionappvijo2grouac7f_name'), '/default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_fonctionappvijogrouac7f_name'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_fonctionappvijo2grouac7f_name'))]"
             ],
             "properties": {
                 "cors": {
@@ -514,9 +514,9 @@
         {
             "type": "Microsoft.Storage/storageAccounts/tableServices",
             "apiVersion": "2023-05-01",
-            "name": "[concat(parameters('storageAccounts_fonctionappvijogrouac7f_name'), '/default')]",
+            "name": "[concat(parameters('storageAccounts_fonctionappvijo2grouac7f_name'), '/default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_fonctionappvijogrouac7f_name'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_fonctionappvijo2grouac7f_name'))]"
             ],
             "properties": {
                 "cors": {
@@ -527,13 +527,13 @@
         {
             "type": "Microsoft.Web/sites",
             "apiVersion": "2023-12-01",
-            "name": "[parameters('sites_fonctionappvijo_name')]",
+            "name": "[parameters('sites_fonctionappvijo2_name')]",
             "location": "Canada Central",
             "dependsOn": [
-                "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_fonctionappvijogroup_96bd_name'))]"
+                "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_fonctionappvijo2group_96bd_name'))]"
             ],
             "tags": {
-                "hidden-link: /app-insights-resource-id": "/subscriptions/41734dbc-edac-4915-a1d9-63da50959410/resourceGroups/fonctionappvijo_group/providers/microsoft.insights/components/fonctionappvijo",
+                "hidden-link: /app-insights-resource-id": "/subscriptions/41734dbc-edac-4915-a1d9-63da50959410/resourceGroups/fonctionappvijo2_group/providers/microsoft.insights/components/fonctionappvijo2",
                 "hidden-link: /app-insights-instrumentation-key": "4725a387-c824-4dd8-8cd6-1d87e744e2f1",
                 "hidden-link: /app-insights-conn-string": "InstrumentationKey=4725a387-c824-4dd8-8cd6-1d87e744e2f1;IngestionEndpoint=https://canadacentral-1.in.applicationinsights.azure.com/;LiveEndpoint=https://canadacentral.livediagnostics.monitor.azure.com/;ApplicationId=f97a2129-0c8a-4ce1-9853-b30e96ee0494"
             },
@@ -542,17 +542,17 @@
                 "enabled": true,
                 "hostNameSslStates": [
                     {
-                        "name": "[concat(parameters('sites_fonctionappvijo_name'), '.azurewebsites.net')]",
+                        "name": "[concat(parameters('sites_fonctionappvijo2_name'), '.azurewebsites.net')]",
                         "sslState": "Disabled",
                         "hostType": "Standard"
                     },
                     {
-                        "name": "[concat(parameters('sites_fonctionappvijo_name'), '.scm.azurewebsites.net')]",
+                        "name": "[concat(parameters('sites_fonctionappvijo2_name'), '.scm.azurewebsites.net')]",
                         "sslState": "Disabled",
                         "hostType": "Repository"
                     }
                 ],
-                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_fonctionappvijogroup_96bd_name'))]",
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_fonctionappvijo2group_96bd_name'))]",
                 "reserved": false,
                 "isXenon": false,
                 "hyperV": false,
@@ -587,13 +587,13 @@
         {
             "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
             "apiVersion": "2023-12-01",
-            "name": "[concat(parameters('sites_fonctionappvijo_name'), '/ftp')]",
+            "name": "[concat(parameters('sites_fonctionappvijo2_name'), '/ftp')]",
             "location": "Canada Central",
             "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('sites_fonctionappvijo_name'))]"
+                "[resourceId('Microsoft.Web/sites', parameters('sites_fonctionappvijo2_name'))]"
             ],
             "tags": {
-                "hidden-link: /app-insights-resource-id": "/subscriptions/41734dbc-edac-4915-a1d9-63da50959410/resourceGroups/fonctionappvijo_group/providers/microsoft.insights/components/fonctionappvijo",
+                "hidden-link: /app-insights-resource-id": "/subscriptions/41734dbc-edac-4915-a1d9-63da50959410/resourceGroups/fonctionappvijo2_group/providers/microsoft.insights/components/fonctionappvijo2",
                 "hidden-link: /app-insights-instrumentation-key": "4725a387-c824-4dd8-8cd6-1d87e744e2f1",
                 "hidden-link: /app-insights-conn-string": "InstrumentationKey=4725a387-c824-4dd8-8cd6-1d87e744e2f1;IngestionEndpoint=https://canadacentral-1.in.applicationinsights.azure.com/;LiveEndpoint=https://canadacentral.livediagnostics.monitor.azure.com/;ApplicationId=f97a2129-0c8a-4ce1-9853-b30e96ee0494"
             },
@@ -604,13 +604,13 @@
         {
             "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
             "apiVersion": "2023-12-01",
-            "name": "[concat(parameters('sites_fonctionappvijo_name'), '/scm')]",
+            "name": "[concat(parameters('sites_fonctionappvijo2_name'), '/scm')]",
             "location": "Canada Central",
             "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('sites_fonctionappvijo_name'))]"
+                "[resourceId('Microsoft.Web/sites', parameters('sites_fonctionappvijo2_name'))]"
             ],
             "tags": {
-                "hidden-link: /app-insights-resource-id": "/subscriptions/41734dbc-edac-4915-a1d9-63da50959410/resourceGroups/fonctionappvijo_group/providers/microsoft.insights/components/fonctionappvijo",
+                "hidden-link: /app-insights-resource-id": "/subscriptions/41734dbc-edac-4915-a1d9-63da50959410/resourceGroups/fonctionappvijo2_group/providers/microsoft.insights/components/fonctionappvijo2",
                 "hidden-link: /app-insights-instrumentation-key": "4725a387-c824-4dd8-8cd6-1d87e744e2f1",
                 "hidden-link: /app-insights-conn-string": "InstrumentationKey=4725a387-c824-4dd8-8cd6-1d87e744e2f1;IngestionEndpoint=https://canadacentral-1.in.applicationinsights.azure.com/;LiveEndpoint=https://canadacentral.livediagnostics.monitor.azure.com/;ApplicationId=f97a2129-0c8a-4ce1-9853-b30e96ee0494"
             },
@@ -621,13 +621,13 @@
         {
             "type": "Microsoft.Web/sites/config",
             "apiVersion": "2023-12-01",
-            "name": "[concat(parameters('sites_fonctionappvijo_name'), '/web')]",
+            "name": "[concat(parameters('sites_fonctionappvijo2_name'), '/web')]",
             "location": "Canada Central",
             "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('sites_fonctionappvijo_name'))]"
+                "[resourceId('Microsoft.Web/sites', parameters('sites_fonctionappvijo2_name'))]"
             ],
             "tags": {
-                "hidden-link: /app-insights-resource-id": "/subscriptions/41734dbc-edac-4915-a1d9-63da50959410/resourceGroups/fonctionappvijo_group/providers/microsoft.insights/components/fonctionappvijo",
+                "hidden-link: /app-insights-resource-id": "/subscriptions/41734dbc-edac-4915-a1d9-63da50959410/resourceGroups/fonctionappvijo2_group/providers/microsoft.insights/components/fonctionappvijo2",
                 "hidden-link: /app-insights-instrumentation-key": "4725a387-c824-4dd8-8cd6-1d87e744e2f1",
                 "hidden-link: /app-insights-conn-string": "InstrumentationKey=4725a387-c824-4dd8-8cd6-1d87e744e2f1;IngestionEndpoint=https://canadacentral-1.in.applicationinsights.azure.com/;LiveEndpoint=https://canadacentral.livediagnostics.monitor.azure.com/;ApplicationId=f97a2129-0c8a-4ce1-9853-b30e96ee0494"
             },
@@ -711,10 +711,10 @@
         {
             "type": "Microsoft.Web/sites/deployments",
             "apiVersion": "2023-12-01",
-            "name": "[concat(parameters('sites_fonctionappvijo_name'), '/99c2a6fdf1844f17a58c40610be54e66')]",
+            "name": "[concat(parameters('sites_fonctionappvijo2_name'), '/99c2a6fdf1844f17a58c40610be54e66')]",
             "location": "Canada Central",
             "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('sites_fonctionappvijo_name'))]"
+                "[resourceId('Microsoft.Web/sites', parameters('sites_fonctionappvijo2_name'))]"
             ],
             "properties": {
                 "status": 4,
@@ -730,15 +730,15 @@
         {
             "type": "Microsoft.Web/sites/functions",
             "apiVersion": "2023-12-01",
-            "name": "[concat(parameters('sites_fonctionappvijo_name'), '/Function1')]",
+            "name": "[concat(parameters('sites_fonctionappvijo2_name'), '/Function1')]",
             "location": "Canada Central",
             "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('sites_fonctionappvijo_name'))]"
+                "[resourceId('Microsoft.Web/sites', parameters('sites_fonctionappvijo2_name'))]"
             ],
             "properties": {
-                "script_href": "https://fonctionappvijo.azurewebsites.net/admin/vfs/site/wwwroot/FunctionApp7.dll",
-                "test_data_href": "https://fonctionappvijo.azurewebsites.net/admin/vfs/data/Functions/sampledata/Function1.dat",
-                "href": "https://fonctionappvijo.azurewebsites.net/admin/functions/Function1",
+                "script_href": "https://fonctionappvijo2.azurewebsites.net/admin/vfs/site/wwwroot/FunctionApp7.dll",
+                "test_data_href": "https://fonctionappvijo2.azurewebsites.net/admin/vfs/data/Functions/sampledata/Function1.dat",
+                "href": "https://fonctionappvijo2.azurewebsites.net/admin/functions/Function1",
                 "config": {
                     "name": "Function1",
                     "entryPoint": "FunctionApp7.Function1.Run",
@@ -765,23 +765,23 @@
         {
             "type": "Microsoft.Web/sites/hostNameBindings",
             "apiVersion": "2023-12-01",
-            "name": "[concat(parameters('sites_fonctionappvijo_name'), '/', parameters('sites_fonctionappvijo_name'), '.azurewebsites.net')]",
+            "name": "[concat(parameters('sites_fonctionappvijo2_name'), '/', parameters('sites_fonctionappvijo2_name'), '.azurewebsites.net')]",
             "location": "Canada Central",
             "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('sites_fonctionappvijo_name'))]"
+                "[resourceId('Microsoft.Web/sites', parameters('sites_fonctionappvijo2_name'))]"
             ],
             "properties": {
-                "siteName": "fonctionappvijo",
+                "siteName": "fonctionappvijo2",
                 "hostNameType": "Verified"
             }
         },
         {
             "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
             "apiVersion": "2023-05-01",
-            "name": "[concat(parameters('storageAccounts_fonctionappvijogrouac7f_name'), '/default/azure-webjobs-hosts')]",
+            "name": "[concat(parameters('storageAccounts_fonctionappvijo2grouac7f_name'), '/default/azure-webjobs-hosts')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_fonctionappvijogrouac7f_name'), 'default')]",
-                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_fonctionappvijogrouac7f_name'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_fonctionappvijo2grouac7f_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_fonctionappvijo2grouac7f_name'))]"
             ],
             "properties": {
                 "immutableStorageWithVersioning": {
@@ -795,10 +795,10 @@
         {
             "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
             "apiVersion": "2023-05-01",
-            "name": "[concat(parameters('storageAccounts_fonctionappvijogrouac7f_name'), '/default/azure-webjobs-secrets')]",
+            "name": "[concat(parameters('storageAccounts_fonctionappvijo2grouac7f_name'), '/default/azure-webjobs-secrets')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_fonctionappvijogrouac7f_name'), 'default')]",
-                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_fonctionappvijogrouac7f_name'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_fonctionappvijo2grouac7f_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_fonctionappvijo2grouac7f_name'))]"
             ],
             "properties": {
                 "immutableStorageWithVersioning": {
@@ -812,10 +812,10 @@
         {
             "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
             "apiVersion": "2023-05-01",
-            "name": "[concat(parameters('storageAccounts_fonctionappvijogrouac7f_name'), '/default/samples-workitems')]",
+            "name": "[concat(parameters('storageAccounts_fonctionappvijo2grouac7f_name'), '/default/samples-workitems')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_fonctionappvijogrouac7f_name'), 'default')]",
-                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_fonctionappvijogrouac7f_name'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_fonctionappvijo2grouac7f_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_fonctionappvijo2grouac7f_name'))]"
             ],
             "properties": {
                 "immutableStorageWithVersioning": {
@@ -829,10 +829,10 @@
         {
             "type": "Microsoft.Storage/storageAccounts/fileServices/shares",
             "apiVersion": "2023-05-01",
-            "name": "[concat(parameters('storageAccounts_fonctionappvijogrouac7f_name'), '/default/fonctionappvijoa06f')]",
+            "name": "[concat(parameters('storageAccounts_fonctionappvijo2grouac7f_name'), '/default/fonctionappvijo2a06f')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts/fileServices', parameters('storageAccounts_fonctionappvijogrouac7f_name'), 'default')]",
-                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_fonctionappvijogrouac7f_name'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts/fileServices', parameters('storageAccounts_fonctionappvijo2grouac7f_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_fonctionappvijo2grouac7f_name'))]"
             ],
             "properties": {
                 "accessTier": "TransactionOptimized",
@@ -843,10 +843,10 @@
         {
             "type": "Microsoft.Storage/storageAccounts/queueServices/queues",
             "apiVersion": "2023-05-01",
-            "name": "[concat(parameters('storageAccounts_fonctionappvijogrouac7f_name'), '/default/azure-webjobs-blobtrigger-fonctionappvijo')]",
+            "name": "[concat(parameters('storageAccounts_fonctionappvijo2grouac7f_name'), '/default/azure-webjobs-blobtrigger-fonctionappvijo2')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts/queueServices', parameters('storageAccounts_fonctionappvijogrouac7f_name'), 'default')]",
-                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_fonctionappvijogrouac7f_name'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts/queueServices', parameters('storageAccounts_fonctionappvijo2grouac7f_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_fonctionappvijo2grouac7f_name'))]"
             ],
             "properties": {
                 "metadata": {}
@@ -855,10 +855,10 @@
         {
             "type": "Microsoft.Storage/storageAccounts/queueServices/queues",
             "apiVersion": "2023-05-01",
-            "name": "[concat(parameters('storageAccounts_fonctionappvijogrouac7f_name'), '/default/azure-webjobs-blobtrigger-victorj-977232068')]",
+            "name": "[concat(parameters('storageAccounts_fonctionappvijo2grouac7f_name'), '/default/azure-webjobs-blobtrigger-victorj-977232068')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts/queueServices', parameters('storageAccounts_fonctionappvijogrouac7f_name'), 'default')]",
-                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_fonctionappvijogrouac7f_name'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts/queueServices', parameters('storageAccounts_fonctionappvijo2grouac7f_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_fonctionappvijo2grouac7f_name'))]"
             ],
             "properties": {
                 "metadata": {}
@@ -867,10 +867,10 @@
         {
             "type": "Microsoft.Storage/storageAccounts/tableServices/tables",
             "apiVersion": "2023-05-01",
-            "name": "[concat(parameters('storageAccounts_fonctionappvijogrouac7f_name'), '/default/AzureFunctionsDiagnosticEvents202412')]",
+            "name": "[concat(parameters('storageAccounts_fonctionappvijo2grouac7f_name'), '/default/AzureFunctionsDiagnosticEvents202412')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts/tableServices', parameters('storageAccounts_fonctionappvijogrouac7f_name'), 'default')]",
-                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_fonctionappvijogrouac7f_name'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts/tableServices', parameters('storageAccounts_fonctionappvijo2grouac7f_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_fonctionappvijo2grouac7f_name'))]"
             ],
             "properties": {}
         }
