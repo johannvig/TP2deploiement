@@ -8,20 +8,19 @@ steps:
 - checkout: self
   displayName: "Télécharger le code source depuis GitHub"
 
-# Étape 2 : Lister tous les fichiers téléchargés (Vérification)
-- script: dir "$(Build.SourcesDirectory)"
-  displayName: "Lister les fichiers dans le dépôt"
-
-# Étape 3 : Créer le groupe de ressources s'il n'existe pas
+# Étape 2 : Créer le Log Analytics Workspace si nécessaire
 - task: AzureCLI@2
   inputs:
     azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
     scriptType: 'ps'
     scriptLocation: 'inlineScript'
     inlineScript: |
-      az group create --name TP2C --location canadacentral
+      az monitor log-analytics workspace create `
+        --resource-group TP2C `
+        --workspace-name DefaultWorkspace-4752c137-48fe-4a21-ac6e-435c1d51dbe9 `
+        --location canadacentral
 
-# Étape 3 : Validation du template ARM
+# Étape 3 : Valider le template ARM
 - task: AzureCLI@2
   inputs:
     azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
@@ -33,7 +32,7 @@ steps:
         --template-file "$(Build.SourcesDirectory)\template.json" `
         --parameters "$(Build.SourcesDirectory)\parameters.json"
 
-# Étape 4 : Déploiement du template ARM
+# Étape 4 : Déployer le template ARM
 - task: AzureCLI@2
   inputs:
     azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
