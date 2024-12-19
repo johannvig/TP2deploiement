@@ -23,7 +23,7 @@
             "type": "String"
         },
         "workspaces_DefaultWorkspace_4752c137-48fe-4a21-ac6e-435c1d51dbe9_CCAN_externalid": {
-            "defaultValue": "/subscriptions/4752c137-48fe-4a21-ac6e-435c1d51dbe9/resourceGroups/DefaultResourceGroup-CCAN/providers/Microsoft.OperationalInsights/workspaces/DefaultWorkspace-4752c137-48fe-4a21-ac6e-435c1d51dbe9-CCAN",
+            "value": "/subscriptions/4752c137-48fe-4a21-ac6e-435c1d51dbe9/resourceGroups/TP2C/providers/Microsoft.OperationalInsights/workspaces/DefaultWorkspace-4752c137-48fe-4a21-ac6e-435c1d51dbe9",
             "type": "String"
         }
     },
