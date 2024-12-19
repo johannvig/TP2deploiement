@@ -4,11 +4,9 @@ trigger:
 pool: 'default'
 
 variables:
-  AzureAppFunction: 'AzureResourceTP2/BlobManipulation'
-  StorageAccountName: 'tp2storageaccount$(Build.BuildId)'
-  ServiceBusNamespace: 'tp2servicebus$(Build.BuildId)'
-  QueueName: 'tp2queue'
+  AzureAppFunction: 'AzureResourceTP2/FunctionApp/Function'
   AzureFunctionAppName: 'TP2GuroFunction'
+  StorageAccountName: 'tp2storageaccount$(Build.BuildId)'
   Location: 'Canada Central'
 
 stages:
@@ -18,58 +16,89 @@ stages:
       - job: DeployInfrastructure
         displayName: 'Infrastructure Deployment'
         steps:
-          # Création du groupe de ressources
+          # Vérification ou création du groupe de ressources tp2SC
           - task: AzureCLI@2
-            displayName: 'Create Resource Group'
+            displayName: 'Check or Create Resource Group tp2SC'
             inputs:
               azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
               scriptType: 'batch'
               scriptLocation: 'inlineScript'
               inlineScript: |
-                az group create --name tp2SC --location "$(Location)"
+                az group create ^
+                  --name tp2SC ^
+                  --location "$(Location)"
 
-          # Création du Storage Account
+          # Création ou vérification du groupe de ressources DefaultResourceGroup-CCAN
           - task: AzureCLI@2
-            displayName: 'Create Storage Account'
+            displayName: 'Check or Create Resource Group DefaultResourceGroup-CCAN'
             inputs:
               azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
               scriptType: 'batch'
               scriptLocation: 'inlineScript'
               inlineScript: |
-                az storage account create --name $(StorageAccountName) --resource-group tp2SC --location "$(Location)" --sku Standard_LRS
+                az group create ^
+                  --name DefaultResourceGroup-CCAN ^
+                  --location "$(Location)"
 
-          # Création du Service Bus
+                    # Vérification ou création du compte de stockage
           - task: AzureCLI@2
-            displayName: 'Create Service Bus Namespace and Queue'
+            displayName: 'Check or Create Storage Account'
             inputs:
               azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
               scriptType: 'batch'
               scriptLocation: 'inlineScript'
               inlineScript: |
-                az servicebus namespace create --name $(ServiceBusNamespace) --resource-group tp2SC --location "$(Location)"
-                az servicebus queue create --name $(QueueName) --namespace-name $(ServiceBusNamespace) --resource-group tp2SC
+                set STORAGE_EXISTS=0
+                for /f "delims=" %%i in ('az storage account check-name --name $(StorageAccountName) --query "nameAvailable" --output tsv') do (
+                  if %%i==true (
+                    set STORAGE_EXISTS=1
+                  )
+                )
+                if %STORAGE_EXISTS%==1 (
+                  echo "Creating storage account: $(StorageAccountName)"
+                  az storage account create ^
+                    --name $(StorageAccountName) ^
+                    --resource-group tp2SC ^
+                    --location "$(Location)" ^
+                    --sku Standard_LRS
+                ) else (
+                  echo "Storage account $(StorageAccountName) already exists."
+                )
 
-  - stage: DeployBlobManipulation
-    displayName: 'Deploy Blob Manipulation'
-    dependsOn: DeployInfrastructure
-    jobs:
-      - job: DeployBlobManipulation
-        displayName: 'Deploy Blob Manipulation App'
-        steps:
-          # Build and deploy Blob Manipulation App
-          - task: DotNetCoreCLI@2
-            displayName: 'Publish Blob Manipulation App'
-            inputs:
-              command: 'publish'
-              projects: '$(Build.SourcesDirectory)/AzureResourceTP2/BlobManipulation/BlobManipulation.csproj'
-              arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)/BlobManipulation'
-              publishWebProjects: false  # Désactive la détection automatique des projets web
 
+
+          # Création de la Function App
           - task: AzureCLI@2
-            displayName: 'Run Blob Manipulation App'
+            displayName: 'Create Function App'
             inputs:
               azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
               scriptType: 'batch'
               scriptLocation: 'inlineScript'
               inlineScript: |
-                dotnet $(Build.ArtifactStagingDirectory)/BlobManipulation/BlobManipulation.dll
+                az functionapp create ^
+                  --name $(AzureFunctionAppName) ^
+                  --storage-account $(StorageAccountName) ^
+                  --resource-group tp2SC ^
+                  --consumption-plan-location "eastus" ^
+                  --runtime dotnet ^
+                  --runtime-version 8 ^
+                  --functions-version 4
+
+
+          # Configuration des conteneurs pour Azure Functions
+          - task: AzureCLI@2
+            displayName: 'Configure Blob Containers'
+            inputs:
+              azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
+              scriptType: 'batch'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                az storage container create ^
+                  --name azure-webjobs-hosts ^
+                  --account-name $(StorageAccountName) ^
+                  --public-access off
+
+                az storage container create ^
+                  --name azure-webjobs-secrets ^
+                  --account-name $(StorageAccountName) ^
+                  --public-access off
