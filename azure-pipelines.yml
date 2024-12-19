@@ -8,7 +8,11 @@ steps:
 - checkout: self
   displayName: "Télécharger le code source depuis GitHub"
 
-# Étape 2 : Validation du template ARM
+# Étape 2 : Vérifier les fichiers téléchargés
+- script: dir "$(Build.SourcesDirectory)\TP2deploiement"
+  displayName: "Lister les fichiers dans TP2deploiement"
+
+# Étape 3 : Validation du template ARM
 - task: AzureCLI@2
   inputs:
     azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
@@ -17,10 +21,10 @@ steps:
     inlineScript: |
       az deployment group validate `
         --resource-group TP2C `
-        --template-file "$(Build.SourcesDirectory)/TP2deploiement/template.json" `
-        --parameters "$(Build.SourcesDirectory)/TP2deploiement/parameters.json"
+        --template-file "$(Build.SourcesDirectory)\TP2deploiement\template.json" `
+        --parameters "$(Build.SourcesDirectory)\TP2deploiement\parameters.json"
 
-# Étape 3 : Déploiement du template ARM
+# Étape 4 : Déploiement du template ARM
 - task: AzureCLI@2
   inputs:
     azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
@@ -29,6 +33,6 @@ steps:
     inlineScript: |
       az deployment group create `
         --resource-group TP2C `
-        --template-file "$(Build.SourcesDirectory)/TP2deploiement/template.json" `
-        --parameters "$(Build.SourcesDirectory)/TP2deploiement/parameters.json" `
+        --template-file "$(Build.SourcesDirectory)\TP2deploiement\template.json" `
+        --parameters "$(Build.SourcesDirectory)\TP2deploiement\parameters.json" `
         --verbose
