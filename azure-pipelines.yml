@@ -1,8 +1,7 @@
 trigger:
 - main
 
-pool:
-  vmImage: 'ubuntu-latest'
+pool: 'default'
 
 steps:
 # Étape 1 : Télécharger le code source depuis GitHub
