@@ -1,0 +1,24 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "sites_fonctionappvijo_name": {
+            "value": null
+        },
+        "components_fonctionappvijo_name": {
+            "value": null
+        },
+        "serverfarms_ASP_fonctionappvijogroup_96bd_name": {
+            "value": null
+        },
+        "storageAccounts_fonctionappvijogrouac7f_name": {
+            "value": null
+        },
+        "actionGroups_Application_Insights_Smart_Detection_name": {
+            "value": null
+        },
+        "workspaces_DefaultWorkspace_41734dbc_edac_4915_a1d9_63da50959410_CCAN_externalid": {
+            "value": null
+        }
+    }
+}
