@@ -2,16 +2,16 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "sites_fonctionappvijo_name": {
+        "sites_fonctionappvijo2_name": {
             "value": null
         },
-        "components_fonctionappvijo_name": {
+        "components_fonctionappvijo2_name": {
             "value": null
         },
-        "serverfarms_ASP_fonctionappvijogroup_96bd_name": {
+        "serverfarms_ASP_fonctionappvijo2group_96bd_name": {
             "value": null
         },
-        "storageAccounts_fonctionappvijogrouac7f_name": {
+        "storageAccounts_fonctionappvijo2grouac7f_name": {
             "value": null
         },
         "actionGroups_Application_Insights_Smart_Detection_name": {
