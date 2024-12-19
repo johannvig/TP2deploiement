@@ -28,6 +28,7 @@ stages:
                 az group create --name tp2SC --location "$(Location)"
 
           # Création du compte de stockage
+          # Création du compte de stockage
           - task: AzureCLI@2
             displayName: 'Create Storage Account'
             inputs:
@@ -35,11 +36,12 @@ stages:
               scriptType: 'batch'
               scriptLocation: 'inlineScript'
               inlineScript: |
-                az storage account create \
-                  --name $(StorageAccountName) \
-                  --resource-group tp2SC \
-                  --location "$(Location)" \
+                az storage account create ^
+                  --name "$(StorageAccountName)" ^
+                  --resource-group tp2SC ^
+                  --location "$(Location)" ^
                   --sku Standard_LRS
+
 
           # Création du Service Bus et de la queue
           - task: AzureCLI@2
