@@ -43,7 +43,7 @@ stages:
                   --sku Standard_LRS
 
 
-          # Création du Service Bus et de la queue
+                    # Création du Service Bus et de la queue
           - task: AzureCLI@2
             displayName: 'Create Service Bus and Queue'
             inputs:
@@ -61,6 +61,7 @@ stages:
                   --name $(QueueName) \
                   --namespace-name $(ServiceBusNamespace) \
                   --resource-group tp2SC
+
 
           # Création de la Function App
           - task: AzureCLI@2
