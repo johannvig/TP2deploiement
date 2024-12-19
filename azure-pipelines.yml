@@ -15,21 +15,20 @@ steps:
     scriptType: 'ps'
     scriptLocation: 'inlineScript'
     inlineScript: |
-      az deployment group validate \
-        --resource-group TP2C \
-        --template-file $(Build.SourcesDirectory)/TP2deploiement/template.json \
-        --parameters $(Build.SourcesDirectory)/TP2deploiement/parameters.json
+      az deployment group validate `
+        --resource-group TP2C `
+        --template-file "$(Build.SourcesDirectory)/TP2deploiement/template.json" `
+        --parameters "$(Build.SourcesDirectory)/TP2deploiement/parameters.json"
 
 # Étape 3 : Déploiement du template ARM
 - task: AzureCLI@2
   inputs:
     azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
-    scriptType: 'ps'  # Utiliser PowerShell au lieu de bash
+    scriptType: 'ps'
     scriptLocation: 'inlineScript'
     inlineScript: |
       az deployment group create `
         --resource-group TP2C `
-        --template-file $(Build.SourcesDirectory)/TP2deploiement/template.json `
-        --parameters $(Build.SourcesDirectory)/TP2deploiement/parameters.json `
+        --template-file "$(Build.SourcesDirectory)/TP2deploiement/template.json" `
+        --parameters "$(Build.SourcesDirectory)/TP2deploiement/parameters.json" `
         --verbose
-
