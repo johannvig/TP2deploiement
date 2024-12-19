@@ -87,7 +87,7 @@
                 "name": "Standard_LRS",
                 "tier": "Standard"
             },
-            "kind": "Storage",
+            "kind": "StorageV2",
             "properties": {
                 "defaultToOAuthAuthentication": true,
                 "allowCrossTenantReplication": false,
