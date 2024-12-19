@@ -3,11 +3,11 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "sites_fonctionappvijo2_name": {
-            "defaultValue": "fonctionappvijo22",
+            "defaultValue": "fonctionappvijo2",
             "type": "String"
         },
         "components_fonctionappvijo2_name": {
-            "defaultValue": "fonctionappvijo22",
+            "defaultValue": "fonctionappvijo2",
             "type": "String"
         },
         "serverfarms_ASP_fonctionappvijo2group_96bd_name": {
