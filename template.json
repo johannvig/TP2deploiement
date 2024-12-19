@@ -15,7 +15,7 @@
             "type": "String"
         },
         "storageAccounts_fonctionappvijogrouac7f_name": {
-            "defaultValue": "fonctionappvijogrouac7f",
+            "defaultValue": "fonctionappvijogrouac7funique",
             "type": "String"
         },
         "actionGroups_Application_Insights_Smart_Detection_name": {
