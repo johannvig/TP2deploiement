@@ -754,7 +754,7 @@
                                 "supportsDeferredBinding": "True"
                             },
                             "path": "samples-workitems/{name}",
-                            "connection": ""
+                            "connection": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('storageAccounts_fonctionappvijo2grouac7f_name'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_fonctionappvijo2grouac7f_name')), '2021-08-01').keys[0].value, ';EndpointSuffix=core.windows.net')]"
                         }
                     ]
                 },
