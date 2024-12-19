@@ -3,22 +3,22 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "sites_fonctionappvijo2_name": {
-            "value": null
+            "value": "fonctionappvijo2"
         },
         "components_fonctionappvijo2_name": {
-            "value": null
+            "value": "fonctionappvijo2"
         },
         "serverfarms_ASP_fonctionappvijo2group_96bd_name": {
-            "value": null
+            "value": "ASP-fonctionappvijo2group-96bd"
         },
         "storageAccounts_fonctionappvijo2grouac7f_name": {
-            "value": null
+            "value": "fonctionappvijo2grouzaw"
         },
         "actionGroups_Application_Insights_Smart_Detection_name": {
-            "value": null
+            "value": "Application Insights Smart Detection"
         },
         "workspaces_DefaultWorkspace_4752c137-48fe-4a21-ac6e-435c1d51dbe9_CCAN_externalid": {
-            "value": null
+            "value": "/subscriptions/4752c137-48fe-4a21-ac6e-435c1d51dbe9/resourceGroups/TP2C/providers/Microsoft.OperationalInsights/workspaces/DefaultWorkspace-4752c137-48fe-4a21-ac6e-435c1d51dbe9"
         }
     }
 }
