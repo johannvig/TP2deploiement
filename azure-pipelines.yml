@@ -4,7 +4,7 @@ trigger:
 pool: 'default'
 
 variables:
-  AzureAppFunction: 'AzureResourceTP2/FunctionApp/Function'
+  AzureAppFunction: 'AzureResourceTP2/BlobManipulation'
   StorageAccountName: 'tp2storageaccount$(Build.BuildId)'
   ServiceBusNamespace: 'tp2servicebus$(Build.BuildId)'
   QueueName: 'tp2queue'
@@ -49,60 +49,27 @@ stages:
                 az servicebus namespace create --name $(ServiceBusNamespace) --resource-group tp2SC --location "$(Location)"
                 az servicebus queue create --name $(QueueName) --namespace-name $(ServiceBusNamespace) --resource-group tp2SC
 
-          # Déploiement de la Function App
+  - stage: DeployBlobManipulation
+    displayName: 'Deploy Blob Manipulation'
+    dependsOn: DeployInfrastructure
+    jobs:
+      - job: DeployBlobManipulation
+        displayName: 'Deploy Blob Manipulation App'
+        steps:
+          # Build and deploy Blob Manipulation App
+          - task: DotNetCoreCLI@2
+            displayName: 'Publish Blob Manipulation App'
+            inputs:
+              command: 'publish'
+              projects: '$(Build.SourcesDirectory)/AzureResourceTP2/BlobManipulation/BlobManipulation.csproj'
+              arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)/BlobManipulation'
+              publishWebProjects: false  # Désactive la détection automatique des projets web
+
           - task: AzureCLI@2
-            displayName: 'Deploy Function App'
+            displayName: 'Run Blob Manipulation App'
             inputs:
               azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
               scriptType: 'batch'
               scriptLocation: 'inlineScript'
               inlineScript: |
-                az functionapp create ^
-                  --name $(AzureFunctionAppName) ^
-                  --storage-account $(StorageAccountName) ^
-                  --resource-group tp2SC ^
-                  --consumption-plan-location "eastus" ^
-                  --runtime dotnet ^
-                  --runtime-version 8 ^
-                  --functions-version 4
-
-  - stage: DeployFunctions
-    displayName: 'Deploy Azure Functions'
-    dependsOn: DeployInfrastructure
-    jobs:
-      - job: DeployFunctions
-        displayName: 'Deploy Functions'
-        steps:
-          # Build and deploy Blob Trigger Function
-          - task: DotNetCoreCLI@2
-            displayName: 'Publish Blob Trigger Function'
-            inputs:
-              command: 'publish'
-              projects: '$(Build.SourcesDirectory)/AzureResourceTP2/FunctionApp/Function/Function.csproj'
-              arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)/BlobTrigger'
-              publishWebProjects: false  # Désactive la détection automatique des projets web
-
-          - task: AzureFunctionApp@2
-            displayName: 'Deploy Blob Trigger Function'
-            inputs:
-              azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
-              appType: 'functionApp'  # Ajout de la propriété appType
-              appName: $(AzureFunctionAppName)
-              package: '$(Build.ArtifactStagingDirectory)/BlobTrigger/**/*.zip'
-
-          # Build and deploy Queue Trigger Function
-          - task: DotNetCoreCLI@2
-            displayName: 'Publish Queue Trigger Function'
-            inputs:
-              command: 'publish'
-              projects: 'QueueTriggerFunction/QueueTriggerFunction.csproj'
-              arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)/QueueTrigger'
-
-          - task: AzureFunctionApp@2
-            displayName: 'Deploy Queue Trigger Function'
-            inputs:
-              azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
-              appType: 'functionApp'  # Ajout de la propriété appType
-              appName: $(AzureFunctionAppName)
-              package: '$(Build.ArtifactStagingDirectory)/QueueTrigger/**/*.zip'
-
+                dotnet $(Build.ArtifactStagingDirectory)/BlobManipulation/BlobManipulation.dll
