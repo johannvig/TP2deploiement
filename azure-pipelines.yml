@@ -18,16 +18,6 @@ steps:
     inlineScript: |
       az group create --name TP2C --location canadacentral
 
-# Étape 3 : Vérifier et supprimer les déploiements précédents (éviter les conflits)
-- task: AzureCLI@2
-  displayName: "Supprimer les déploiements précédents (si existants)"
-  inputs:
-    azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
-    scriptType: 'ps'
-    scriptLocation: 'inlineScript'
-    inlineScript: |
-      az deployment group delete --resource-group TP2C --name template || echo "Aucun déploiement précédent trouvé."
-
 # Étape 4 : Créer le compte de stockage
 - task: AzureCLI@2
   displayName: "Créer le compte de stockage"
