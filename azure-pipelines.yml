@@ -18,7 +18,17 @@ steps:
     inlineScript: |
       az group create --name TP2C --location canadacentral
 
-# Étape 3 : Créer le compte de stockage
+# Étape 3 : Vérifier et supprimer les déploiements précédents (éviter les conflits)
+- task: AzureCLI@2
+  displayName: "Supprimer les déploiements précédents (si existants)"
+  inputs:
+    azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
+    scriptType: 'ps'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az deployment group delete --resource-group TP2C --name template || echo "Aucun déploiement précédent trouvé."
+
+# Étape 4 : Créer le compte de stockage
 - task: AzureCLI@2
   displayName: "Créer le compte de stockage"
   inputs:
@@ -32,7 +42,7 @@ steps:
         --location canadacentral `
         --sku Standard_LRS
 
-# Étape 4 : Créer le Log Analytics Workspace
+# Étape 5 : Créer le Log Analytics Workspace
 - task: AzureCLI@2
   displayName: "Créer le Log Analytics Workspace"
   inputs:
@@ -45,7 +55,7 @@ steps:
         --workspace-name DefaultWorkspace-4752c137-48fe-4a21-ac6e-435c1d51dbe9 `
         --location canadacentral
 
-# Étape 5 : Valider le template ARM
+# Étape 6 : Valider le template ARM
 - task: AzureCLI@2
   displayName: "Valider le template ARM"
   inputs:
@@ -58,7 +68,7 @@ steps:
         --template-file "$(Build.SourcesDirectory)\template.json" `
         --parameters "$(Build.SourcesDirectory)\parameters.json"
 
-# Étape 6 : Déployer le template ARM
+# Étape 7 : Déployer le template ARM
 - task: AzureCLI@2
   displayName: "Déployer le template ARM"
   inputs:
