@@ -4,13 +4,15 @@ trigger:
 pool: 'default'
 
 steps:
-# Étape 1 : Télécharger le code source depuis GitHub
+# Étape 1 : Télécharger le code source depuis GitHub avec sous-modules
 - checkout: self
+  submodules: true
+  persistCredentials: true
   displayName: "Télécharger le code source depuis GitHub"
 
-# Étape 2 : Vérifier les fichiers téléchargés
-- script: dir "$(Build.SourcesDirectory)\TP2deploiement"
-  displayName: "Lister les fichiers dans TP2deploiement"
+# Étape 2 : Lister tous les fichiers téléchargés
+- script: dir "$(Build.SourcesDirectory)"
+  displayName: "Lister les fichiers dans le dépôt"
 
 # Étape 3 : Validation du template ARM
 - task: AzureCLI@2
