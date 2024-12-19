@@ -22,8 +22,8 @@
             "defaultValue": "Application Insights Smart Detection",
             "type": "String"
         },
-        "workspaces_DefaultWorkspace_41734dbc_edac_4915_a1d9_63da50959410_CCAN_externalid": {
-            "defaultValue": "/subscriptions/41734dbc-edac-4915-a1d9-63da50959410/resourceGroups/DefaultResourceGroup-CCAN/providers/Microsoft.OperationalInsights/workspaces/DefaultWorkspace-41734dbc-edac-4915-a1d9-63da50959410-CCAN",
+        "workspaces_DefaultWorkspace_4752c137-48fe-4a21-ac6e-435c1d51dbe9_CCAN_externalid": {
+            "defaultValue": "/subscriptions/4752c137-48fe-4a21-ac6e-435c1d51dbe9/resourceGroups/DefaultResourceGroup-CCAN/providers/Microsoft.OperationalInsights/workspaces/DefaultWorkspace-4752c137-48fe-4a21-ac6e-435c1d51dbe9-CCAN",
             "type": "String"
         }
     },
