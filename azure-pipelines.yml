@@ -4,13 +4,11 @@ trigger:
 pool: 'default'
 
 steps:
-# Étape 1 : Télécharger le code source depuis GitHub avec sous-modules
+# Étape 1 : Télécharger le code source depuis GitHub
 - checkout: self
-  submodules: true
-  persistCredentials: true
   displayName: "Télécharger le code source depuis GitHub"
 
-# Étape 2 : Lister tous les fichiers téléchargés
+# Étape 2 : Lister tous les fichiers téléchargés (Vérification)
 - script: dir "$(Build.SourcesDirectory)"
   displayName: "Lister les fichiers dans le dépôt"
 
@@ -23,8 +21,8 @@ steps:
     inlineScript: |
       az deployment group validate `
         --resource-group TP2C `
-        --template-file "$(Build.SourcesDirectory)\TP2deploiement\template.json" `
-        --parameters "$(Build.SourcesDirectory)\TP2deploiement\parameters.json"
+        --template-file "$(Build.SourcesDirectory)\template.json" `
+        --parameters "$(Build.SourcesDirectory)\parameters.json"
 
 # Étape 4 : Déploiement du template ARM
 - task: AzureCLI@2
@@ -35,6 +33,6 @@ steps:
     inlineScript: |
       az deployment group create `
         --resource-group TP2C `
-        --template-file "$(Build.SourcesDirectory)\TP2deploiement\template.json" `
-        --parameters "$(Build.SourcesDirectory)\TP2deploiement\parameters.json" `
+        --template-file "$(Build.SourcesDirectory)\template.json" `
+        --parameters "$(Build.SourcesDirectory)\parameters.json" `
         --verbose
