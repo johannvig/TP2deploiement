@@ -8,16 +8,16 @@ steps:
 - checkout: self
   displayName: "Télécharger le code source depuis GitHub"
 
-# Étape 2 : Créer le Log Analytics Workspace si nécessaire
+# Étape 2 : Créer le Log Analytics Workspace
 - task: AzureCLI@2
   inputs:
     azureSubscription: 'Azure subscription 1(2)(4752c137-48fe-4a21-ac6e-435c1d51dbe9)'
     scriptType: 'ps'
     scriptLocation: 'inlineScript'
     inlineScript: |
-      az monitor log-analytics workspace create 
-        --resource-group TP2C 
-        --workspace-name DefaultWorkspace-4752c137-48fe-4a21-ac6e-435c1d51dbe9 
+      az monitor log-analytics workspace create `
+        --resource-group TP2C `
+        --workspace-name DefaultWorkspace-4752c137-48fe-4a21-ac6e-435c1d51dbe9 `
         --location canadacentral
 
 # Étape 3 : Valider le template ARM
@@ -27,9 +27,9 @@ steps:
     scriptType: 'ps'
     scriptLocation: 'inlineScript'
     inlineScript: |
-      az deployment group validate 
-        --resource-group TP2C 
-        --template-file "$(Build.SourcesDirectory)\template.json" 
+      az deployment group validate `
+        --resource-group TP2C `
+        --template-file "$(Build.SourcesDirectory)\template.json" `
         --parameters "$(Build.SourcesDirectory)\parameters.json"
 
 # Étape 4 : Déployer le template ARM
@@ -39,8 +39,8 @@ steps:
     scriptType: 'ps'
     scriptLocation: 'inlineScript'
     inlineScript: |
-      az deployment group create 
-        --resource-group TP2C 
-        --template-file "$(Build.SourcesDirectory)\template.json" 
-        --parameters "$(Build.SourcesDirectory)\parameters.json" 
+      az deployment group create `
+        --resource-group TP2C `
+        --template-file "$(Build.SourcesDirectory)\template.json" `
+        --parameters "$(Build.SourcesDirectory)\parameters.json" `
         --verbose
